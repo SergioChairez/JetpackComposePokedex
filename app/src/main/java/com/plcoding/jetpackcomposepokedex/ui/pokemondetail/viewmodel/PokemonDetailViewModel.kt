@@ -1,4 +1,4 @@
-package com.plcoding.jetpackcomposepokedex.pokemondetail
+package com.plcoding.jetpackcomposepokedex.ui.pokemondetail.viewmodel
 
 import androidx.lifecycle.ViewModel
 import com.plcoding.jetpackcomposepokedex.data.remote.responses.Pokemon

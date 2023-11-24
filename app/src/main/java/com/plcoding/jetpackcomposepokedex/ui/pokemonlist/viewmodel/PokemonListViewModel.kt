@@ -1,4 +1,4 @@
-package com.plcoding.jetpackcomposepokedex.pokemonlist
+package com.plcoding.jetpackcomposepokedex.ui.pokemonlist.viewmodel
 
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
@@ -8,7 +8,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.palette.graphics.Palette
-import com.plcoding.jetpackcomposepokedex.data.models.PokedexListEntry
+import com.plcoding.jetpackcomposepokedex.data.models.PokemonListEntry
 import com.plcoding.jetpackcomposepokedex.repository.PokemonRepository
 import com.plcoding.jetpackcomposepokedex.util.Constants.PAGE_SIZE
 import com.plcoding.jetpackcomposepokedex.util.Resource
@@ -25,12 +25,12 @@ class PokemonListViewModel @Inject constructor(
 
     private var curPage = 0
 
-    var pokemonList = mutableStateOf<List<PokedexListEntry>>(listOf())
+    var pokemonList = mutableStateOf<List<PokemonListEntry>>(listOf())
     var loadError = mutableStateOf("")
     var isLoading = mutableStateOf(false)
     var endReached = mutableStateOf(false)
 
-    private var cachedPokemonList = listOf<PokedexListEntry>()
+    private var cachedPokemonList = listOf<PokemonListEntry>()
     private var isSearchStarting = true
     var isSearching = mutableStateOf(false)
 
@@ -67,8 +67,7 @@ class PokemonListViewModel @Inject constructor(
     fun loadPokemonPaginated () {
         viewModelScope.launch {
             isLoading.value = true
-            val result = repository.getPokemonList(PAGE_SIZE, curPage * PAGE_SIZE)
-            when(result) {
+            when(val result = repository.getPokemonList(PAGE_SIZE, curPage * PAGE_SIZE)) {
                 is Resource.Success -> {
                     endReached.value = curPage * PAGE_SIZE >= result.data!!.count
                     val pokedexEntries = result.data.results.mapIndexed { index, entry ->
@@ -78,7 +77,7 @@ class PokemonListViewModel @Inject constructor(
                             entry.url.takeLastWhile { it.isDigit() }
                         }
                         val url = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${number}.png"
-                        PokedexListEntry(entry.name.replaceFirstChar {
+                        PokemonListEntry(entry.name.replaceFirstChar {
                             if (it.isLowerCase()) it.titlecase(
                                 Locale.ROOT
                             ) else it.toString()
