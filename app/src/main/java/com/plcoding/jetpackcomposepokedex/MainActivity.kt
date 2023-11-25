@@ -10,9 +10,10 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import com.plcoding.jetpackcomposepokedex.ui.pokemondetail.pokemonDetailScreen.PokemonDetailScreen
-import com.plcoding.jetpackcomposepokedex.ui.pokemonlist.screen.PokemonListScreen
-import com.plcoding.jetpackcomposepokedex.ui.theme.JetpackComposePokedexTheme
+import com.plcoding.jetpackcomposepokedex.presentation.generationlist.ui.screen.GenerationListScreen
+import com.plcoding.jetpackcomposepokedex.presentation.pokemondetail.ui.pokemonDetailScreen.PokemonDetailScreen
+import com.plcoding.jetpackcomposepokedex.presentation.pokemonlist.ui.screen.PokemonListScreen
+import com.plcoding.jetpackcomposepokedex.presentation.theme.JetpackComposePokedexTheme
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.Locale
 
@@ -25,9 +26,12 @@ class MainActivity : ComponentActivity() {
                 val navController = rememberNavController()
                 NavHost(
                     navController = navController,
-                    startDestination = "pokemon_list_screen"
+                    startDestination = "generation_list_screen"
                 )
                 {
+                    composable("generation_list_screen") {
+                        GenerationListScreen(navController = navController)
+                    }
                     composable("pokemon_list_screen") {
                         PokemonListScreen(navController = navController)
                     }

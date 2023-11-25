@@ -1,9 +1,9 @@
 package com.plcoding.jetpackcomposepokedex.util
 
 import androidx.compose.ui.graphics.Color
-import com.plcoding.jetpackcomposepokedex.data.remote.responses.Type
-import com.plcoding.jetpackcomposepokedex.data.remote.responses.Stat
-import com.plcoding.jetpackcomposepokedex.ui.theme.*
+import com.plcoding.jetpackcomposepokedex.domain.models.Stat
+import com.plcoding.jetpackcomposepokedex.domain.models.Type
+import com.plcoding.jetpackcomposepokedex.presentation.theme.*
 import java.util.*
 
 fun parseTypeToColor(type: Type): Color {
