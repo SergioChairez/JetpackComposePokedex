@@ -1,13 +1,13 @@
 package com.plcoding.jetpackcomposepokedex.presentation.theme
 
 import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.darkColors
-import androidx.compose.material.lightColors
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.darkColorScheme
+import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 
-private val DarkColorPalette = darkColors(
+private val DarkColorPalette = darkColorScheme(
     primary = Color.Yellow,
     background = Color(0xFF101010),
     onBackground = Color.White,
@@ -15,7 +15,7 @@ private val DarkColorPalette = darkColors(
     onSurface = Color.White
 )
 
-private val LightColorPalette = lightColors(
+private val LightColorPalette = lightColorScheme(
     primary = Color.Blue,
     background = LightBlue,
     onBackground = Color.Black,
@@ -32,7 +32,7 @@ fun JetpackComposePokedexTheme(darkTheme: Boolean = isSystemInDarkTheme(), conte
     }
 
     MaterialTheme(
-        colors = colors,
+        colorScheme = colors,
         typography = Typography,
         shapes = Shapes,
         content = content

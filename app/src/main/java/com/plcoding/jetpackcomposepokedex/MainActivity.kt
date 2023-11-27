@@ -3,6 +3,8 @@ package com.plcoding.jetpackcomposepokedex
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.material3.DrawerValue
+import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.Color
 import androidx.navigation.NavType
@@ -10,9 +12,10 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import com.plcoding.jetpackcomposepokedex.presentation.generationlist.ui.screen.GenerationListScreen
-import com.plcoding.jetpackcomposepokedex.presentation.pokemondetail.ui.pokemonDetailScreen.PokemonDetailScreen
-import com.plcoding.jetpackcomposepokedex.presentation.pokemonlist.ui.screen.PokemonListScreen
+import com.plcoding.jetpackcomposepokedex.presentation.generationListScreen.ui.screen.GenerationListScreen
+import com.plcoding.jetpackcomposepokedex.presentation.homeScreen.ui.screen.HomeScreen
+import com.plcoding.jetpackcomposepokedex.presentation.pokemonDetailScreen.ui.pokemonDetailScreen.PokemonDetailScreen
+import com.plcoding.jetpackcomposepokedex.presentation.pokemonListScreen.ui.screen.PokemonListScreen
 import com.plcoding.jetpackcomposepokedex.presentation.theme.JetpackComposePokedexTheme
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.Locale
@@ -24,16 +27,32 @@ class MainActivity : ComponentActivity() {
         setContent {
             JetpackComposePokedexTheme {
                 val navController = rememberNavController()
+                val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
                 NavHost(
                     navController = navController,
-                    startDestination = "generation_list_screen"
+                    startDestination = "home_screen"
                 )
                 {
+                    composable("home_screen") {
+                        HomeScreen(
+                            drawerState = drawerState,
+                            navController = navController
+                        )
+                    }
                     composable("generation_list_screen") {
-                        GenerationListScreen(navController = navController)
+                        GenerationListScreen(
+                            drawerState = drawerState,
+                            navController = navController
+                        )
+                    }
+                    composable("generation_detail_screen/{generationName}",) {
+                       // GenerationDetailScreen(navController = navController)
                     }
                     composable("pokemon_list_screen") {
-                        PokemonListScreen(navController = navController)
+                        PokemonListScreen(
+                            drawerState = drawerState,
+                            navController = navController
+                        )
                     }
                     composable(
                         "pokemon_detail_screen/{dominantColor}/{pokemonName}",
@@ -54,6 +73,7 @@ class MainActivity : ComponentActivity() {
                             it.arguments?.getString("pokemonName")
                         }
                         PokemonDetailScreen(
+                            drawerState = drawerState,
                             dominantColor = dominantColor,
                             pokemonName = pokemonName?.lowercase(Locale.ROOT) ?: "",
                             navController = navController
