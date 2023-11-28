@@ -7,7 +7,9 @@ import androidx.paging.PagingConfig
 import androidx.room.Room
 import com.plcoding.jetpackcomposepokedex.data.datasource.local.GenerationEntity
 import com.plcoding.jetpackcomposepokedex.data.datasource.local.PokedexDataBase
+import com.plcoding.jetpackcomposepokedex.data.datasource.local.PokemonEntity
 import com.plcoding.jetpackcomposepokedex.data.datasource.mediator.GenerationRemoteMediator
+import com.plcoding.jetpackcomposepokedex.data.datasource.mediator.PokemonRemoteMediator
 import com.plcoding.jetpackcomposepokedex.data.datasource.remote.api.PokemonApiService
 import dagger.Module
 import dagger.Provides
@@ -37,16 +39,34 @@ object AppModule {
     @Singleton
     internal fun provideGenerationListPager(
         pokedexDb: PokedexDataBase,
-        pokedexApi: PokemonApiService
+        pokemonApiService: PokemonApiService
     ): Pager<Int, GenerationEntity> {
         return Pager(
             config = PagingConfig(pageSize = 10),
             remoteMediator = GenerationRemoteMediator(
                 pokedexDb = pokedexDb,
-                pokedexApi = pokedexApi
+                pokemonApiService = pokemonApiService,
             ),
             pagingSourceFactory = {
-                pokedexDb.dao.pagingSourceGeneration()
+                pokedexDb.dao.pagingSourceGenerationList()
+            }
+        )
+    }
+
+    @Provides
+    @Singleton
+    internal fun providePokemonListPager(
+        pokedexDb: PokedexDataBase,
+        pokedexApi: PokemonApiService
+    ): Pager<Int, PokemonEntity> {
+        return Pager(
+            config = PagingConfig(pageSize = 10),
+            remoteMediator = PokemonRemoteMediator(
+                pokedexDb = pokedexDb,
+                pokemonApiService = pokedexApi
+            ),
+            pagingSourceFactory = {
+                pokedexDb.dao.pagingSourcePokemonList()
             }
         )
     }

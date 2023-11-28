@@ -3,101 +3,23 @@ package com.plcoding.jetpackcomposepokedex.presentation.pokemonListScreen.viewmo
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.paging.Pager
+import androidx.paging.cachedIn
 import androidx.palette.graphics.Palette
-import com.plcoding.jetpackcomposepokedex.domain.models.PokemonListEntryModel
-import com.plcoding.jetpackcomposepokedex.domain.useCases.FetchPokemonListUseCase
-import com.plcoding.jetpackcomposepokedex.util.Constants.PAGE_SIZE
-import com.plcoding.jetpackcomposepokedex.util.ResultValue
+import com.plcoding.jetpackcomposepokedex.data.datasource.local.PokemonEntity
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.util.Locale
 import javax.inject.Inject
 
 @HiltViewModel
 class PokemonListViewModel @Inject constructor(
-    private val useCase: FetchPokemonListUseCase
+    pager: Pager<Int, PokemonEntity>,
 ): ViewModel() {
-
-    private var curPage = 0
-
-    var pokemonList = mutableStateOf<List<PokemonListEntryModel>>(listOf())
-    var loadError = mutableStateOf("")
-    var isLoading = mutableStateOf(false)
-    var endReached = mutableStateOf(false)
-
-    private var cachedPokemonList = listOf<PokemonListEntryModel>()
-    private var isSearchStarting = true
-    var isSearching = mutableStateOf(false)
-
-    init {
-        loadPokemonPaginated()
-    }
-
-    fun searchPokemonList(query: String) {
-        val listToSearch = if ( isSearchStarting ) {
-            pokemonList.value
-        } else {
-            cachedPokemonList
-        }
-        viewModelScope.launch(Dispatchers.Default) {
-            if ( query.isEmpty() ) {
-                pokemonList.value = cachedPokemonList
-                isSearching.value = false
-                isSearchStarting = true
-                return@launch
-            }
-            val results = listToSearch.filter {
-                it.pokemonName.contains(query.trim(), ignoreCase = true) ||
-                        it.number.toString() == query.trim()
-            }
-            if ( isSearchStarting ) {
-                cachedPokemonList = pokemonList.value
-                isSearchStarting = false
-            }
-            pokemonList.value = results
-            isSearching.value =  true
-        }
-    }
-
-    fun loadPokemonPaginated () {
-        viewModelScope.launch {
-            isLoading.value = true
-            when(val result = useCase.invoke(PAGE_SIZE, curPage * PAGE_SIZE)) {
-                is ResultValue.Success -> {
-                    endReached.value = curPage * PAGE_SIZE >= result.data.count
-                    val pokedexEntries = result.data.results.mapIndexed { index, entry ->
-                        val number = if(entry.url.endsWith("/")) {
-                            entry.url.dropLast(1).takeLastWhile { it.isDigit() }
-                        } else {
-                            entry.url.takeLastWhile { it.isDigit() }
-                        }
-                        val url = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${number}.png"
-                        PokemonListEntryModel(entry.name.replaceFirstChar {
-                            if (it.isLowerCase()) it.titlecase(
-                                Locale.ROOT
-                            ) else it.toString()
-                        }, url, number.toInt())
-                    }
-                    curPage++
-
-                    loadError.value = ""
-                    isLoading.value = false
-                    pokemonList.value += pokedexEntries
-                }
-                is ResultValue.Error -> {
-                    loadError.value = result.exception.message!!
-                    isLoading.value = false
-                }
-
-                else -> {}
-            }
-        }
-    }
+    val pokemonListPagingFlow = pager.flow.cachedIn(viewModelScope)
 
     fun calcDominantColor(drawable: Drawable, onFinish: (Color) -> Unit) {
         val bmp = (drawable as BitmapDrawable).bitmap.copy(Bitmap.Config.ARGB_8888, true)
@@ -109,5 +31,22 @@ class PokemonListViewModel @Inject constructor(
                 }
             }
         }
+    }
+
+    fun url(imageUrl: String): String {
+        val number = if (imageUrl.endsWith("/")) {
+            imageUrl.dropLast(1).takeLastWhile { it.isDigit() }
+        } else {
+            imageUrl.takeLastWhile { it.isDigit() }
+        }
+        return "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${number}.png"
+    }
+
+    fun formatName(pokemonName: String): String {
+        return pokemonName.split("-").joinToString(" ") { it.replaceFirstChar { firstChar ->
+            if (firstChar.isLowerCase()) firstChar.titlecase(
+                Locale.ROOT
+            ) else firstChar.toString()
+        } }
     }
 }

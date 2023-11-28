@@ -21,8 +21,8 @@ interface PokedexDao {
     suspend fun clearAllPokemonList()
 
     @Query("SELECT * FROM generationentity")
-    fun pagingSourceGeneration(): PagingSource<Int, GenerationEntity>
+    fun pagingSourceGenerationList(): PagingSource<Int, GenerationEntity>
 
     @Query("DELETE FROM generationentity")
-    suspend fun clearAllGeneration()
+    suspend fun clearAllGenerationList()
 }

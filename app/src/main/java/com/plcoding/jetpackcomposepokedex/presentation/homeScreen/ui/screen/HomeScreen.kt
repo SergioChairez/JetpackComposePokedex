@@ -23,45 +23,42 @@ fun HomeScreen(
     drawerState: DrawerState,
     navController: NavController,
 ) {
-
     val scope = rememberCoroutineScope()
 
-    Box(modifier = Modifier.fillMaxSize()) {
-        ModalNavigationDrawer(
-            drawerState = drawerState,
-            drawerContent = {
-                PokedexModalSheet(
+    ModalNavigationDrawer(
+        drawerState = drawerState,
+        drawerContent = {
+            PokedexModalSheet(
+                drawerState = drawerState,
+                scope = scope,
+                navController = navController
+            )
+        },
+    ) {
+        Scaffold(
+            contentColor = MaterialTheme.colorScheme.background,
+            modifier = Modifier.fillMaxSize(),
+            topBar = {
+                PokedexTopAppBar(
                     drawerState = drawerState,
-                    scope = scope,
-                    navController = navController
+                    navController = navController,
                 )
             },
-        ) {
-            Scaffold(
-                contentColor = MaterialTheme.colorScheme.background,
-                modifier = Modifier.fillMaxSize(),
-                topBar = {
-                    PokedexTopAppBar(
-                        drawerState = drawerState,
-                        navController = navController,
-                    )
-                },
-                bottomBar = {
-                    PokedexNavigationBar(
-                        navController = navController
-                    )
-                }
-            ) { innerPadding ->
-                Column(
-                    modifier = Modifier.padding(innerPadding)
+            bottomBar = {
+                PokedexNavigationBar(
+                    navController = navController
+                )
+            }
+        ) { innerPadding ->
+            Column(
+                modifier = Modifier.padding(innerPadding)
+            ) {
+                Box(
+                    contentAlignment = Alignment.Center
                 ) {
-                    Box(
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Text(text = "Categories")
-                        Column {
+                    Text(text = "Categories")
+                    Column {
 
-                        }
                     }
                 }
             }

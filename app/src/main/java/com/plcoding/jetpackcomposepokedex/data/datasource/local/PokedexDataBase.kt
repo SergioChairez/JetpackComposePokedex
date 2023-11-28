@@ -8,7 +8,7 @@ import androidx.room.RoomDatabase
         PokemonEntity::class,
         GenerationEntity::class
                ],
-    version = 1
+    version = 2
 )
 abstract class PokedexDataBase: RoomDatabase() {
 

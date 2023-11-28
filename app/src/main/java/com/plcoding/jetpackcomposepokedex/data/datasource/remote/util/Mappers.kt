@@ -1,13 +1,16 @@
 package com.plcoding.jetpackcomposepokedex.data.datasource.remote.util
 
 import com.plcoding.jetpackcomposepokedex.data.datasource.local.GenerationEntity
+import com.plcoding.jetpackcomposepokedex.data.datasource.local.PokemonEntity
 import com.plcoding.jetpackcomposepokedex.data.datasource.remote.model.response.FetchGenerationResponseDTO
 import com.plcoding.jetpackcomposepokedex.data.datasource.remote.model.response.FetchPokemonListModelResponseDTO
 import com.plcoding.jetpackcomposepokedex.data.datasource.remote.model.response.FetchPokemonResponseDTO
 import com.plcoding.jetpackcomposepokedex.domain.models.Generation
 import com.plcoding.jetpackcomposepokedex.domain.models.GenerationList
 import com.plcoding.jetpackcomposepokedex.domain.models.Pokemon
+import com.plcoding.jetpackcomposepokedex.domain.models.PokemonEntry
 import com.plcoding.jetpackcomposepokedex.domain.models.PokemonListModel
+import kotlin.random.Random
 
 internal fun FetchPokemonListModelResponseDTO.asDomain(): PokemonListModel =
     PokemonListModel(
@@ -16,6 +19,24 @@ internal fun FetchPokemonListModelResponseDTO.asDomain(): PokemonListModel =
         next = next,
         results = results
     )
+
+internal fun FetchPokemonListModelResponseDTO.toPokemonEntity(): List<PokemonEntity>{
+    return results.map { result ->
+        PokemonEntity(
+            pokemonName = result.name,
+            imageUrl = result.url,
+            number = Random.nextInt( 1, 2000 )
+        )
+    }
+}
+
+internal fun PokemonEntity.toPokemonEntry(): PokemonEntry {
+    return PokemonEntry(
+        pokemonName = pokemonName,
+        imageUrl = imageUrl,
+        number = number
+    )
+}
 
 internal fun FetchPokemonResponseDTO.asDomain(): Pokemon =
     Pokemon(

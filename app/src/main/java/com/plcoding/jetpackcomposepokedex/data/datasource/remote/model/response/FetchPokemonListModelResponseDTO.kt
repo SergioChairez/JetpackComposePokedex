@@ -8,6 +8,6 @@ import com.plcoding.jetpackcomposepokedex.domain.models.Result
 internal data class FetchPokemonListModelResponseDTO (
     @SerializedName("count") val count: Int,
     @SerializedName("next") val next: String,
-    @SerializedName("previous") val previous: Int,
+    @SerializedName("previous") val previous: String,
     @SerializedName("results") val results: List<Result>,
 )

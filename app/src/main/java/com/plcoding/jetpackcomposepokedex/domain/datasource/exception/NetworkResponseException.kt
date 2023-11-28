@@ -1,6 +1,7 @@
 package com.plcoding.jetpackcomposepokedex.domain.datasource.exception
 
 fun createExceptionByErrorCode(errorCode: Int?): Exception = when (errorCode) {
+    null -> NetworkResponseException("Error code is null")
     400 -> BadRequestException()
     401 -> UnauthorizedException()
     402 -> PaymentRequiredException()
@@ -44,7 +45,7 @@ fun createExceptionByErrorCode(errorCode: Int?): Exception = when (errorCode) {
 }
 
 open class NetworkResponseException(
-    val errorMessage: String = "Unknown network error",
+    errorMessage: String = "Unknown network error",
     val errorCode: Int = DEFAULT_ERROR_CODE,
 ) : Exception(errorMessage) {
 

@@ -29,42 +29,41 @@ fun GenerationListScreen(
     viewModel: GenerationListViewModel = hiltViewModel(),
     navController: NavController,
 ) {
-
     val scope = rememberCoroutineScope()
 
-    Box(modifier = Modifier.fillMaxSize()) {
-        ModalNavigationDrawer(
-            drawerState = drawerState,
-            drawerContent = {
-                PokedexModalSheet(
+    ModalNavigationDrawer(
+        drawerState = drawerState,
+        drawerContent = {
+            PokedexModalSheet(
+                drawerState = drawerState,
+                scope = scope,
+                navController = navController
+            )
+        },
+    ) {
+        Scaffold(
+            contentColor = MaterialTheme.colorScheme.background,
+            modifier = Modifier.fillMaxSize(),
+            topBar = {
+                PokedexTopAppBar(
                     drawerState = drawerState,
-                    scope = scope,
-                    navController = navController
+                    navController = navController,
                 )
             },
-        ) {
-            Scaffold(
-                contentColor = MaterialTheme.colorScheme.background,
-                modifier = Modifier.fillMaxSize(),
-                topBar = {
-                    PokedexTopAppBar(
-                        drawerState = drawerState,
-                        navController = navController,
-                    )
-                },
-                bottomBar = {
-                    PokedexNavigationBar(
-                        navController = navController,
-                    )
-                }
-            ) { innerPadding ->
-                Box(modifier = Modifier.padding(innerPadding)){
-                    GenerationListScreenContent(
-                        viewModel = viewModel,
-                        generations = viewModel.generationPagingFlow.flow.collectAsLazyPagingItems(),
-                        navController = navController
-                    )
-                }
+            bottomBar = {
+                PokedexNavigationBar(
+                    navController = navController,
+                )
+            }
+        ) { innerPadding ->
+            Box(modifier = Modifier.padding(innerPadding)){
+                GenerationListScreenContent(
+                    generations = viewModel.generationPagingFlow.collectAsLazyPagingItems(),
+                    navController = navController,
+                    onRetry = {
+
+                    }
+                )
             }
         }
     }

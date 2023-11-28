@@ -20,27 +20,24 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import coil.compose.SubcomposeAsyncImage
 import coil.request.ImageRequest
-import com.plcoding.jetpackcomposepokedex.domain.models.PokemonListEntryModel
+import com.plcoding.jetpackcomposepokedex.data.datasource.local.PokemonEntity
 import com.plcoding.jetpackcomposepokedex.presentation.pokemonListScreen.viewmodel.PokemonListViewModel
-import com.plcoding.jetpackcomposepokedex.presentation.theme.RobotoCondensed
 
 @Composable
-fun PokedexItem(
-    entry: PokemonListEntryModel,
+fun PokemonItem(
+    entry: PokemonEntity,
     navController: NavController,
-    modifier: Modifier,
-    viewModel: PokemonListViewModel = hiltViewModel()
+    viewModel: PokemonListViewModel
 ) {
     val defaultDominantColor = MaterialTheme.colorScheme.surface
     var dominantColor by remember {
@@ -49,8 +46,7 @@ fun PokedexItem(
 
     Box(
         contentAlignment = Alignment.Center,
-        modifier = modifier
-            .shadow(5.dp, RoundedCornerShape(10.dp))
+        modifier = Modifier
             .clip(RoundedCornerShape(10.dp))
             .background(
                 Brush.verticalGradient(
@@ -69,9 +65,10 @@ fun PokedexItem(
         Column {
             SubcomposeAsyncImage(
                 model = ImageRequest.Builder(LocalContext.current)
-                    .data(entry.imageUrl)
+                    .data(viewModel.url(entry.imageUrl))
                     .build(),
                 contentDescription = entry.pokemonName,
+                contentScale = ContentScale.FillBounds,
                 modifier = Modifier
                     .size(120.dp)
                     .align(Alignment.CenterHorizontally)
@@ -90,13 +87,17 @@ fun PokedexItem(
                 }
             )
             Text(
-                text = entry.pokemonName,
-                fontFamily = RobotoCondensed,
-                fontSize = 20.sp,
+                text = viewModel.formatName(entry.pokemonName),
                 textAlign = TextAlign.Center,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(bottom = 5.dp)
+                    .padding(bottom = 5.dp),
+                style = TextStyle(
+                    color = MaterialTheme.colorScheme.onSurface,
+                    fontFamily = MaterialTheme.typography.titleLarge.fontFamily,
+                    fontSize = MaterialTheme.typography.titleMedium.fontSize,
+                    textAlign = MaterialTheme.typography.titleMedium.textAlign
+                )
             )
         }
     }
