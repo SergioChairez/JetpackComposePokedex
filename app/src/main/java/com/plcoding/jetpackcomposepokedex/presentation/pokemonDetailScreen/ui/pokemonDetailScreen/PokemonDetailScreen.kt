@@ -9,10 +9,8 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.DrawerState
-import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.produceState
 import androidx.compose.ui.Alignment
@@ -52,7 +50,7 @@ fun PokemonDetailScreen(
     ) {
         PokedexTopAppBar(
             navController = navController,
-            drawerState = rememberDrawerState(initialValue = DrawerValue.Closed),
+            drawerState = drawerState,
         )
 
         when ( pokemonModelInfo ) {
