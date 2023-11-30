@@ -2,31 +2,31 @@ package com.plcoding.jetpackcomposepokedex.presentation.utils
 
 import androidx.compose.foundation.focusable
 import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Search
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 
 @Composable
 fun SearchBar(
     modifier: Modifier = Modifier,
-    hint: String = "",
+    hint: String = "Search Pokemon",
     onSearch: (String) -> Unit = {}
 ) {
     var text by remember {
         mutableStateOf("")
     }
-
     val interactionSource = remember { MutableInteractionSource() }
 
     TextField(
@@ -37,17 +37,32 @@ fun SearchBar(
         },
         maxLines = 1,
         singleLine = true,
-        textStyle = TextStyle(color = Color.Black),
+        textStyle = TextStyle(
+            fontSize = MaterialTheme.typography.bodyLarge.fontSize,
+            fontWeight = MaterialTheme.typography.bodyLarge.fontWeight,
+            fontFamily = MaterialTheme.typography.bodyLarge.fontFamily,
+            lineHeight = MaterialTheme.typography.bodyLarge.lineHeight,
+            color = MaterialTheme.colorScheme.onSurface
+        )
+        ,
         modifier = modifier
-            .fillMaxWidth()
-            .padding(horizontal = 20.dp)
             .focusable(interactionSource = interactionSource),
         placeholder = {
             Text(
                 text = hint,
-                color = Color.LightGray
+                style = TextStyle(
+                    fontSize = MaterialTheme.typography.bodyLarge.fontSize,
+                    fontWeight = MaterialTheme.typography.bodyLarge.fontWeight,
+                    fontFamily = MaterialTheme.typography.bodyLarge.fontFamily,
+                    lineHeight = MaterialTheme.typography.bodyLarge.lineHeight
+                ),
+                color = MaterialTheme.colorScheme.onSurfaceVariant
             )
-        }
+        },
+        leadingIcon = { Icon(Icons.Filled.Search, contentDescription = null) },
+        colors = TextFieldDefaults.colors(
+            unfocusedContainerColor = MaterialTheme.colorScheme.surface
+        )
     )
 }
 

@@ -1,6 +1,6 @@
 package com.plcoding.jetpackcomposepokedex.domain.models
 
-data class TypeX(
+data class EvolvesFromSpecies(
     val name: String,
     val url: String
 )

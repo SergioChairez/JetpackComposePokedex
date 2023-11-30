@@ -25,7 +25,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
-import com.plcoding.jetpackcomposepokedex.domain.models.Pokemon
+import com.plcoding.jetpackcomposepokedex.domain.models.PokemonModel
 import com.plcoding.jetpackcomposepokedex.presentation.pokemonDetailScreen.ui.pokemonDetailScreenContent.PokemonDetailScreenContent
 import com.plcoding.jetpackcomposepokedex.presentation.pokemonDetailScreen.viewmodel.PokemonDetailViewModel
 import com.plcoding.jetpackcomposepokedex.presentation.utils.PokedexTopAppBar
@@ -41,7 +41,7 @@ fun PokemonDetailScreen(
     pokemonImageSize: Dp = 200.dp,
     viewModel: PokemonDetailViewModel = hiltViewModel()
 ) {
-    val pokemonInfo = produceState<ResultValue<Pokemon>>(initialValue = ResultValue.Loading()) {
+    val pokemonModelInfo = produceState<ResultValue<PokemonModel>>(initialValue = ResultValue.Loading()) {
         value = viewModel.fetchPokemonInfo(pokemonName)
     }.value
     Box (
@@ -55,10 +55,10 @@ fun PokemonDetailScreen(
             drawerState = rememberDrawerState(initialValue = DrawerValue.Closed),
         )
 
-        when ( pokemonInfo ) {
+        when ( pokemonModelInfo ) {
             is ResultValue.Success -> {
                 PokemonDetailScreenContent(
-                    pokemonInfo = pokemonInfo.data,
+                    pokemonModelInfo = pokemonModelInfo.data,
                     modifier = Modifier
                         .fillMaxSize()
                         .padding(
@@ -77,7 +77,7 @@ fun PokemonDetailScreen(
             }
             is ResultValue.Error -> {
                 Text(
-                    text = pokemonInfo.exception.message.toString(),
+                    text = pokemonModelInfo.exception.message.toString(),
                     color = Color.Red,
                     modifier = Modifier
                         .fillMaxSize()
@@ -115,11 +115,11 @@ fun PokemonDetailScreen(
             modifier = Modifier
             .fillMaxSize()
         ) {
-            if ( pokemonInfo is ResultValue.Success ) {
-                pokemonInfo.data.sprites.let {
+            if ( pokemonModelInfo is ResultValue.Success ) {
+                pokemonModelInfo.data.sprites.let {
                     AsyncImage(
                         model = it.front_default,
-                        contentDescription = pokemonInfo.data.name,
+                        contentDescription = pokemonModelInfo.data.name,
                         modifier = Modifier
                             .size(pokemonImageSize)
                             .offset(y = topPadding)

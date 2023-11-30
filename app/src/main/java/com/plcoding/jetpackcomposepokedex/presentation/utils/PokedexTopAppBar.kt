@@ -1,6 +1,7 @@
 package com.plcoding.jetpackcomposepokedex.presentation.utils
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Menu
@@ -33,18 +34,33 @@ fun PokedexTopAppBar(
 ) {
 
     val scope = rememberCoroutineScope()
+    val currentDestination = navController.currentDestination?.route
 
     CenterAlignedTopAppBar(
         colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
-            containerColor = MaterialTheme.colorScheme.primaryContainer,
-            scrolledContainerColor = MaterialTheme.colorScheme.surfaceVariant
+            containerColor = MaterialTheme.colorScheme.surface,
         ),
+        modifier = Modifier.height(55.dp),
         title = {
-            Image(
-                painter = painterResource(id = R.drawable.ic_international_pok_mon_logo),
-                contentDescription = null,
-                modifier = Modifier.size(150.dp)
-            )
+            when(currentDestination) {
+                "home_screen" -> {
+                    Image(
+                        painter = painterResource(id = R.drawable.ic_international_pok_mon_logo),
+                        contentDescription = null,
+                        modifier = Modifier.size(150.dp)
+                    )
+                }
+                "pokemon_list_screen" -> {
+                    SearchBar()
+                }
+                else -> {
+                    Image(
+                        painter = painterResource(id = R.drawable.ic_international_pok_mon_logo),
+                        contentDescription = null,
+                        modifier = Modifier.size(150.dp)
+                    )
+                }
+            }
         },
         navigationIcon = {
             IconButton(

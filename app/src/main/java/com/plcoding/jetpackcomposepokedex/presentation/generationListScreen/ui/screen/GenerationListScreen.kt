@@ -6,21 +6,21 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.DrawerState
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import androidx.paging.compose.collectAsLazyPagingItems
 import com.plcoding.jetpackcomposepokedex.presentation.generationListScreen.ui.screenContent.GenerationListScreenContent
 import com.plcoding.jetpackcomposepokedex.presentation.generationListScreen.viewmodel.GenerationListViewModel
 import com.plcoding.jetpackcomposepokedex.presentation.utils.PokedexModalSheet
 import com.plcoding.jetpackcomposepokedex.presentation.utils.PokedexNavigationBar
+import com.plcoding.jetpackcomposepokedex.presentation.utils.PokedexNavigationDrawer
 import com.plcoding.jetpackcomposepokedex.presentation.utils.PokedexTopAppBar
 
 @Composable
@@ -30,8 +30,9 @@ fun GenerationListScreen(
     navController: NavController,
 ) {
     val scope = rememberCoroutineScope()
+    val uiState = viewModel.uiState.collectAsState().value
 
-    ModalNavigationDrawer(
+    PokedexNavigationDrawer(
         drawerState = drawerState,
         drawerContent = {
             PokedexModalSheet(
@@ -58,10 +59,10 @@ fun GenerationListScreen(
         ) { innerPadding ->
             Box(modifier = Modifier.padding(innerPadding)){
                 GenerationListScreenContent(
-                    generations = viewModel.generationPagingFlow.collectAsLazyPagingItems(),
                     navController = navController,
+                    uiState = uiState,
                     onRetry = {
-
+                        viewModel.loadGenerationList()
                     }
                 )
             }

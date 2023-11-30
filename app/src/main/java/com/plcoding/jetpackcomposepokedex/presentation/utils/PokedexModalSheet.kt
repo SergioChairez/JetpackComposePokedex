@@ -1,10 +1,12 @@
 package com.plcoding.jetpackcomposepokedex.presentation.utils
 
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.List
 import androidx.compose.material.icons.filled.ListAlt
+import androidx.compose.material3.Divider
 import androidx.compose.material3.DrawerState
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.Icon
@@ -15,11 +17,11 @@ import androidx.compose.material3.NavigationDrawerItemDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import kotlinx.coroutines.CoroutineScope
@@ -32,42 +34,62 @@ fun PokedexModalSheet(
     navController: NavController
 ) {
     val items = listOf(Icons.Default.List, Icons.Default.ListAlt, Icons.Default.Favorite)
-    val selectedItem = remember { mutableStateOf(items[0]) }
     val names = listOf("Generations","All Pokemon","Favorites")
-    val selectedName = remember { mutableStateOf(names[0]) }
     val navList = listOf("generation_list_screen", "pokemon_list_screen", "")
-    val selectedNavList = remember { mutableStateOf(navList[0]) }
 
     ModalDrawerSheet(
         drawerContainerColor = MaterialTheme.colorScheme.surface
     ) {
         NavigationDrawerItem(
-            label = { Text(text = "Menu") },
+            label = { Text(
+                text = "Menu",
+                style = TextStyle(
+                    fontFamily = MaterialTheme.typography.titleMedium.fontFamily,
+                    fontWeight = MaterialTheme.typography.titleMedium.fontWeight,
+                    fontSize = MaterialTheme.typography.titleMedium.fontSize,
+                    lineHeight = MaterialTheme.typography.titleMedium.lineHeight,
+
+                )
+            ) },
             selected = false,
             onClick = { /*TODO*/ }
         )
+        Divider(color = MaterialTheme.colorScheme.outline)
         items.indices.forEach { index ->
             val item = items[index]
             val name = names[index]
             val nav = navList[index]
             NavigationDrawerItem(
-                icon = { Icon(item, contentDescription = null) },
+                icon = { Icon(
+                    item,
+                    contentDescription = null,
+                    modifier = Modifier.size(24.dp),
+                    tint = MaterialTheme.colorScheme.onSurface
+                ) },
                 label = {
-                    Text(text = name)
+                    Text(
+                        text = name,
+                        style = TextStyle(
+                            fontSize = MaterialTheme.typography.titleLarge.fontSize,
+                            fontWeight = MaterialTheme.typography.titleLarge.fontWeight,
+                            fontFamily = MaterialTheme.typography.titleLarge.fontFamily,
+                            lineHeight = MaterialTheme.typography.titleLarge .lineHeight,
+
+                        )
+                    )
                 },
-                selected = item == selectedItem.value,
+                selected = navController.currentDestination?.route == nav,
                 onClick = {
-                    selectedItem.value = item
-                    selectedName.value = name
-                    selectedNavList.value = nav
-                    navController.navigate(selectedNavList.value)
+                    navController.navigate(nav)
                     scope.launch {
                         drawerState.close()
                     }
                 },
-                modifier = Modifier.padding(NavigationDrawerItemDefaults.ItemPadding)
+                modifier = Modifier
+                    .padding(NavigationDrawerItemDefaults.ItemPadding)
             )
         }
+        Divider(color = MaterialTheme.colorScheme.outline)
     }
 }
 

@@ -1,15 +1,13 @@
 package com.plcoding.jetpackcomposepokedex.data.datasource.remote.util
 
-import com.plcoding.jetpackcomposepokedex.data.datasource.local.GenerationEntity
 import com.plcoding.jetpackcomposepokedex.data.datasource.local.PokemonEntity
 import com.plcoding.jetpackcomposepokedex.data.datasource.remote.model.response.FetchGenerationResponseDTO
 import com.plcoding.jetpackcomposepokedex.data.datasource.remote.model.response.FetchPokemonListModelResponseDTO
 import com.plcoding.jetpackcomposepokedex.data.datasource.remote.model.response.FetchPokemonResponseDTO
-import com.plcoding.jetpackcomposepokedex.domain.models.Generation
 import com.plcoding.jetpackcomposepokedex.domain.models.GenerationList
-import com.plcoding.jetpackcomposepokedex.domain.models.Pokemon
 import com.plcoding.jetpackcomposepokedex.domain.models.PokemonEntry
 import com.plcoding.jetpackcomposepokedex.domain.models.PokemonListModel
+import com.plcoding.jetpackcomposepokedex.domain.models.PokemonModel
 import kotlin.random.Random
 
 internal fun FetchPokemonListModelResponseDTO.asDomain(): PokemonListModel =
@@ -38,8 +36,8 @@ internal fun PokemonEntity.toPokemonEntry(): PokemonEntry {
     )
 }
 
-internal fun FetchPokemonResponseDTO.asDomain(): Pokemon =
-    Pokemon(
+internal fun FetchPokemonResponseDTO.asDomain(): PokemonModel =
+    PokemonModel(
         abilities = abilities,
         base_experience = baseExperience,
         forms = forms,
@@ -68,17 +66,3 @@ internal fun FetchGenerationResponseDTO.asDomain(): GenerationList =
         previous = previous,
         results = results
     )
-
-internal fun FetchGenerationResponseDTO.toGenerationEntity(): List<GenerationEntity> {
-    return results.map { result ->
-        GenerationEntity(
-            name = result.name,
-        )
-    }
-}
-
-internal fun GenerationEntity.toGeneration(): Generation {
-    return Generation(
-        name = name
-    )
-}

@@ -2,7 +2,7 @@ package com.plcoding.jetpackcomposepokedex.data.datasource.remote.model.response
 
 import androidx.annotation.Keep
 import com.google.gson.annotations.SerializedName
-import com.plcoding.jetpackcomposepokedex.domain.models.Ability
+import com.plcoding.jetpackcomposepokedex.domain.models.Abilities
 import com.plcoding.jetpackcomposepokedex.domain.models.Form
 import com.plcoding.jetpackcomposepokedex.domain.models.GameIndice
 import com.plcoding.jetpackcomposepokedex.domain.models.HeldItem
@@ -10,11 +10,11 @@ import com.plcoding.jetpackcomposepokedex.domain.models.Move
 import com.plcoding.jetpackcomposepokedex.domain.models.Species
 import com.plcoding.jetpackcomposepokedex.domain.models.Sprites
 import com.plcoding.jetpackcomposepokedex.domain.models.Stat
-import com.plcoding.jetpackcomposepokedex.domain.models.Type
+import com.plcoding.jetpackcomposepokedex.domain.models.Types
 
 @Keep
 internal data class FetchPokemonResponseDTO(
-    @SerializedName("abilities") val abilities: List<Ability>,
+    @SerializedName("abilities") val abilities: List<Abilities>,
     @SerializedName("base_experience") val baseExperience: Int,
     @SerializedName("forms") val forms: List<Form>,
     @SerializedName("game_indices") val gameIndices: List<GameIndice>,
@@ -31,6 +31,6 @@ internal data class FetchPokemonResponseDTO(
     @SerializedName("species") val species: Species,
     @SerializedName("sprites") val sprites: Sprites,
     @SerializedName("stats") val stats: List<Stat>,
-    @SerializedName("types") val types: List<Type>,
+    @SerializedName("types") val types: List<Types>,
     @SerializedName("weight") val weight: Int
 )

@@ -12,6 +12,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.plcoding.jetpackcomposepokedex.presentation.generationDetailScreen.screen.GenerationDetailScreen
 import com.plcoding.jetpackcomposepokedex.presentation.generationListScreen.ui.screen.GenerationListScreen
 import com.plcoding.jetpackcomposepokedex.presentation.homeScreen.ui.screen.HomeScreen
 import com.plcoding.jetpackcomposepokedex.presentation.pokemonDetailScreen.ui.pokemonDetailScreen.PokemonDetailScreen
@@ -46,7 +47,10 @@ class MainActivity : ComponentActivity() {
                         )
                     }
                     composable("generation_detail_screen/{generationName}",) {
-                       // GenerationDetailScreen(navController = navController)
+                       GenerationDetailScreen(
+                           drawerState = drawerState,
+                           navController = navController
+                       )
                     }
                     composable("pokemon_list_screen") {
                         PokemonListScreen(

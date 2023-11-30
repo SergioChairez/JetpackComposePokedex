@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.DrawerState
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -16,6 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
 import com.plcoding.jetpackcomposepokedex.presentation.utils.PokedexModalSheet
 import com.plcoding.jetpackcomposepokedex.presentation.utils.PokedexNavigationBar
+import com.plcoding.jetpackcomposepokedex.presentation.utils.PokedexNavigationDrawer
 import com.plcoding.jetpackcomposepokedex.presentation.utils.PokedexTopAppBar
 
 @Composable
@@ -25,7 +25,7 @@ fun HomeScreen(
 ) {
     val scope = rememberCoroutineScope()
 
-    ModalNavigationDrawer(
+    PokedexNavigationDrawer(
         drawerState = drawerState,
         drawerContent = {
             PokedexModalSheet(

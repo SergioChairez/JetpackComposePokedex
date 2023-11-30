@@ -11,18 +11,9 @@ interface PokedexDao {
     @Upsert
     suspend fun upsertAllPokemonList(pokemonList: List<PokemonEntity>)
 
-    @Upsert
-    suspend fun upsertAllGenerationList(generationList: List<GenerationEntity>)
-
     @Query("SELECT * FROM pokemonentity")
     fun pagingSourcePokemonList(): PagingSource<Int, PokemonEntity>
 
     @Query("DELETE FROM pokemonentity")
     suspend fun clearAllPokemonList()
-
-    @Query("SELECT * FROM generationentity")
-    fun pagingSourceGenerationList(): PagingSource<Int, GenerationEntity>
-
-    @Query("DELETE FROM generationentity")
-    suspend fun clearAllGenerationList()
 }

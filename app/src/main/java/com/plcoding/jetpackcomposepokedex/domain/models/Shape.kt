@@ -1,6 +1,6 @@
 package com.plcoding.jetpackcomposepokedex.domain.models
 
-data class AbilityX(
+data class Shape(
     val name: String,
     val url: String
 )

@@ -19,7 +19,7 @@ internal class PokemonRemoteMediator(
     private val pokedexDb: PokedexDataBase,
     private val pokemonApiService: PokemonApiService
 ): RemoteMediator<Int, PokemonEntity>() {
-    var counter = 0
+    private var counter = 0
     override suspend fun load(
         loadType: LoadType,
         state: PagingState<Int, PokemonEntity>

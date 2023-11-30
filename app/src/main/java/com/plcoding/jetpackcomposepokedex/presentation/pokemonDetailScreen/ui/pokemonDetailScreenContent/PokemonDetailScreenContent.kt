@@ -37,7 +37,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.plcoding.jetpackcomposepokedex.R
-import com.plcoding.jetpackcomposepokedex.domain.models.Pokemon
+import com.plcoding.jetpackcomposepokedex.domain.models.PokemonModel
 import com.plcoding.jetpackcomposepokedex.presentation.pokemonDetailScreen.ui.utils.PokemonDetailDataItem
 import com.plcoding.jetpackcomposepokedex.util.parseStatToAbbr
 import com.plcoding.jetpackcomposepokedex.util.parseStatToColor
@@ -47,19 +47,19 @@ import kotlin.math.round
 
 @Composable
 fun PokemonDetailScreenContent(
-    pokemonInfo: Pokemon,
+    pokemonModelInfo: PokemonModel,
     modifier: Modifier = Modifier
 ) {
 
     val scrollState = rememberScrollState()
     val pokemonWeightInKg = remember {
-        round(pokemonInfo.weight * 100f) / 1000f
+        round(pokemonModelInfo.weight * 100f) / 1000f
     }
     val pokemonHeightInMeters = remember {
-        round(pokemonInfo.height * 100f) / 1000f
+        round(pokemonModelInfo.height * 100f) / 1000f
     }
     val maxBaseStat = remember {
-        pokemonInfo.stats.maxOf { it.base_stat }
+        pokemonModelInfo.stats.maxOf { it.base_stat }
     }
     var animationPlayed by remember {
         mutableStateOf(false)
@@ -73,7 +73,7 @@ fun PokemonDetailScreenContent(
             .verticalScroll(scrollState)
     ) {
         Text(
-            text = "#${pokemonInfo.id} ${pokemonInfo.name.replaceFirstChar {
+            text = "#${pokemonModelInfo.id} ${pokemonModelInfo.name.replaceFirstChar {
                 if (it.isLowerCase()) it.titlecase(
                     Locale.ROOT
                 ) else it.toString()
@@ -88,7 +88,7 @@ fun PokemonDetailScreenContent(
             modifier = Modifier
                 .padding(16.dp)
         ) {
-            for ( type in pokemonInfo.types ) {
+            for ( type in pokemonModelInfo.types ) {
                 Box(
                     contentAlignment =  Alignment.Center,
                     modifier = Modifier
@@ -143,8 +143,8 @@ fun PokemonDetailScreenContent(
             )
             Spacer(modifier = Modifier.height(4.dp))
 
-            for (i in pokemonInfo.stats.indices) {
-                val stat = pokemonInfo.stats[i]
+            for (i in pokemonModelInfo.stats.indices) {
+                val stat = pokemonModelInfo.stats[i]
                 val curPercent = animateFloatAsState(
                     targetValue = if ( animationPlayed ) {
                         stat.base_stat / maxBaseStat.toFloat()

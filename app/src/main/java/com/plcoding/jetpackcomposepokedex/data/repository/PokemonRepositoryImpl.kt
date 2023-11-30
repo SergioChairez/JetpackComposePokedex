@@ -3,7 +3,7 @@ package com.plcoding.jetpackcomposepokedex.data.repository
 import com.plcoding.jetpackcomposepokedex.data.qualifiers.IoDispatcher
 import com.plcoding.jetpackcomposepokedex.domain.datasource.remote.RemotePokemonDataSource
 import com.plcoding.jetpackcomposepokedex.domain.models.GenerationList
-import com.plcoding.jetpackcomposepokedex.domain.models.Pokemon
+import com.plcoding.jetpackcomposepokedex.domain.models.PokemonModel
 import com.plcoding.jetpackcomposepokedex.domain.models.PokemonListModel
 import com.plcoding.jetpackcomposepokedex.domain.repository.PokemonRepository
 import com.plcoding.jetpackcomposepokedex.util.ResultValue
@@ -20,7 +20,7 @@ internal class PokemonRepositoryImpl @Inject constructor(
             remotePokemonDatasource.fetchPokemonList(limit, offset)
         }
 
-    override suspend fun fetchPokemonInfo(pokemonName: String): ResultValue<Pokemon> =
+    override suspend fun fetchPokemonInfo(pokemonName: String): ResultValue<PokemonModel> =
         withContext(coroutineDispatcher) {
             remotePokemonDatasource.fetchPokemonInfo(pokemonName)
         }

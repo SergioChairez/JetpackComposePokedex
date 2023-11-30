@@ -34,7 +34,7 @@ fun PokemonListScreenContent(
             is LoadState.Loading -> {
                 LinearProgressIndicator(
                     modifier = Modifier
-                        .align(Alignment.Center)
+                        .align(Alignment.TopCenter)
                         .fillMaxWidth(),
                     color = MaterialTheme.colorScheme.primary
                 )
@@ -42,7 +42,7 @@ fun PokemonListScreenContent(
 
             is LoadState.NotLoading -> {
                 LazyVerticalGrid(
-                    columns = GridCells.Fixed(2),
+                    columns = GridCells.Adaptive(120.dp),
                     contentPadding = PaddingValues(16.dp),
                 ) {
                     items(pokemonList.itemCount) { index ->

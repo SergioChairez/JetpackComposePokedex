@@ -3,6 +3,7 @@ package com.plcoding.jetpackcomposepokedex.data.datasource.remote.api
 import com.plcoding.jetpackcomposepokedex.data.datasource.remote.model.response.FetchGenerationResponseDTO
 import com.plcoding.jetpackcomposepokedex.data.datasource.remote.model.response.FetchPokemonListModelResponseDTO
 import com.plcoding.jetpackcomposepokedex.data.datasource.remote.model.response.FetchPokemonResponseDTO
+import com.plcoding.jetpackcomposepokedex.data.datasource.remote.model.response.SearchPokemonResponseDTO
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
@@ -25,4 +26,9 @@ internal interface PokemonApiService {
         @Query("limit") limit: Int,
         @Query("offset") offset: Int
     ): FetchGenerationResponseDTO
+
+    @GET("pokemon-species/{name}")
+    suspend fun searchPokemon(
+        @Path("name") name: String
+    ): SearchPokemonResponseDTO
 }

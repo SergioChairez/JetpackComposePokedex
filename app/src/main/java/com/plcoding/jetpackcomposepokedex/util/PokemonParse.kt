@@ -2,11 +2,11 @@ package com.plcoding.jetpackcomposepokedex.util
 
 import androidx.compose.ui.graphics.Color
 import com.plcoding.jetpackcomposepokedex.domain.models.Stat
-import com.plcoding.jetpackcomposepokedex.domain.models.Type
+import com.plcoding.jetpackcomposepokedex.domain.models.Types
 import com.plcoding.jetpackcomposepokedex.presentation.theme.*
 import java.util.*
 
-fun parseTypeToColor(type: Type): Color {
+fun parseTypeToColor(type: Types): Color {
     return when(type.type.name.lowercase(Locale.ROOT)) {
         "normal" -> TypeNormal
         "fire" -> TypeFire

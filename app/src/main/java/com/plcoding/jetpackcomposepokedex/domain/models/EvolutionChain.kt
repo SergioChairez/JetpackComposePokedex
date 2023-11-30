@@ -1,6 +1,5 @@
 package com.plcoding.jetpackcomposepokedex.domain.models
 
-data class Type(
-    val name: String,
+data class EvolutionChain(
     val url: String
 )
