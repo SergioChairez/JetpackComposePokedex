@@ -1,29 +1,30 @@
-package com.plcoding.jetpackcomposepokedex.presentation.generationListScreen.ui.screenContent
+package com.plcoding.jetpackcomposepokedex.presentation.generationDetailScreen.ui.screenContent
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.LazyHorizontalGrid
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.plcoding.jetpackcomposepokedex.presentation.generationListScreen.ui.generationItem.GenerationItem
-import com.plcoding.jetpackcomposepokedex.presentation.generationListScreen.viewmodel.GenerationListViewModel
+import androidx.navigation.compose.rememberNavController
+import com.plcoding.jetpackcomposepokedex.presentation.generationDetailScreen.ui.generationVersionItem.GenerationVersionItem
+import com.plcoding.jetpackcomposepokedex.presentation.generationDetailScreen.viewmodel.GenerationDetailViewModel
 import com.plcoding.jetpackcomposepokedex.presentation.utils.RetrySection
 
 @Composable
-fun GenerationListScreenContent(
-    uiState: GenerationListViewModel.UiState,
+fun GenerationDetailScreenContent(
+    uiState: GenerationDetailViewModel.UiState,
     navController: NavController,
     onRetry: () -> Unit
 ) {
-
     if(uiState.contentError) {
         Box(
             modifier = Modifier.fillMaxSize(),
@@ -46,20 +47,28 @@ fun GenerationListScreenContent(
                     color = MaterialTheme.colorScheme.primary
                 )
             } else {
-                LazyVerticalGrid(
-                    columns = GridCells.Adaptive(150.dp),
-                    contentPadding = PaddingValues(8.dp)
+                LazyHorizontalGrid(
+                    rows = GridCells.Adaptive(50.dp),
+                    contentPadding = PaddingValues(8.dp),
                 ) {
-                    items(uiState.generationList.size) { index ->
-                        val generation = uiState.generationList[index]
-                        GenerationItem(
-                            index = index,
-                            generation = generation,
-                            navController = navController,
+                    items(uiState.generationDetail.size) { index ->
+                        val generationVersion = uiState.generationDetail[index]
+                        GenerationVersionItem(
+                            version = generationVersion
                         )
                     }
                 }
             }
         }
     }
+}
+
+@Preview
+@Composable
+fun GenerationDetailScreenContentPreview() {
+    GenerationDetailScreenContent(
+        uiState = GenerationDetailViewModel.UiState(),
+        navController = rememberNavController(),
+        onRetry = {}
+    )
 }

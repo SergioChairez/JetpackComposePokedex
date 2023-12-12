@@ -9,7 +9,7 @@ import com.plcoding.jetpackcomposepokedex.domain.models.HeldItem
 import com.plcoding.jetpackcomposepokedex.domain.models.Move
 import com.plcoding.jetpackcomposepokedex.domain.models.Species
 import com.plcoding.jetpackcomposepokedex.domain.models.Sprites
-import com.plcoding.jetpackcomposepokedex.domain.models.Stat
+import com.plcoding.jetpackcomposepokedex.domain.models.Stats
 import com.plcoding.jetpackcomposepokedex.domain.models.Types
 
 @Keep
@@ -30,7 +30,7 @@ internal data class FetchPokemonResponseDTO(
     @SerializedName("past_types") val pastTypes: List<Any>,
     @SerializedName("species") val species: Species,
     @SerializedName("sprites") val sprites: Sprites,
-    @SerializedName("stats") val stats: List<Stat>,
+    @SerializedName("stats") val stats: List<Stats>,
     @SerializedName("types") val types: List<Types>,
     @SerializedName("weight") val weight: Int
 )

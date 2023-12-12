@@ -4,6 +4,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.CenterAlignedTopAppBar
@@ -29,8 +30,9 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PokedexTopAppBar(
-    drawerState: DrawerState,
+    drawerState: DrawerState?,
     navController: NavController,
+    onSearch: (String) -> Unit = {}
 ) {
 
     val scope = rememberCoroutineScope()
@@ -51,7 +53,15 @@ fun PokedexTopAppBar(
                     )
                 }
                 "pokemon_list_screen" -> {
-                    SearchBar()
+                    //SearchBarButton(navController = navController)
+                    Image(
+                        painter = painterResource(id = R.drawable.ic_international_pok_mon_logo),
+                        contentDescription = null,
+                        modifier = Modifier.size(150.dp)
+                    )
+                }
+                "search_screen" -> {
+                    SearchBar(onSearch = onSearch)
                 }
                 else -> {
                     Image(
@@ -63,25 +73,127 @@ fun PokedexTopAppBar(
             }
         },
         navigationIcon = {
-            IconButton(
-                onClick = {
-                    scope.launch {
-                        drawerState.apply {
-                            if (isClosed) open() else close()
-                        }
+            when(currentDestination) {
+                "home_screen" -> {
+                    IconButton(
+                        onClick = {
+                            scope.launch {
+                                drawerState?.apply {
+                                    if (isClosed) open() else close()
+                                }
+                            }
+                        },
+                        modifier = Modifier
+                            .size(48.dp)
+                    ) {
+                        Icon(
+                            imageVector = Icons.Filled.Menu,
+                            contentDescription = null,
+                            modifier = Modifier
+                                .size(24.dp)
+                            ,
+                            tint = MaterialTheme.colorScheme.onSurface
+                        )
                     }
-                },
-                modifier = Modifier
-                    .size(48.dp)
-            ) {
-                Icon(
-                    imageVector = Icons.Filled.Menu,
-                    contentDescription = null,
-                    modifier = Modifier
-                        .size(24.dp)
-                    ,
-                    tint = MaterialTheme.colorScheme.onSurface
-                )
+                }
+                "pokemon_list_screen" -> {
+                    IconButton(
+                        onClick = {
+                            scope.launch {
+                                drawerState?.apply {
+                                    if (isClosed) open() else close()
+                                }
+                            }
+                        },
+                        modifier = Modifier
+                            .size(48.dp)
+                    ) {
+                        Icon(
+                            imageVector = Icons.Filled.Menu,
+                            contentDescription = null,
+                            modifier = Modifier
+                                .size(24.dp)
+                            ,
+                            tint = MaterialTheme.colorScheme.onSurface
+                        )
+                    }
+                }
+                "pokemon_detail_screen/{dominantColor}/{pokemonName}" -> {
+                    IconButton(
+                        onClick = {
+                            navController.popBackStack()
+                        },
+                        modifier = Modifier
+                            .size(48.dp)
+                    ) {
+                        Icon(
+                            imageVector = Icons.Filled.ArrowBack,
+                            contentDescription = null,
+                            modifier = Modifier
+                                .size(24.dp)
+                            ,
+                            tint = MaterialTheme.colorScheme.onSurface
+                        )
+                    }
+                }
+                "search_screen" -> {
+                    IconButton(
+                        onClick = {
+                            navController.popBackStack()
+                        },
+                        modifier = Modifier
+                            .size(48.dp)
+                    ) {
+                        Icon(
+                            imageVector = Icons.Filled.ArrowBack,
+                            contentDescription = null,
+                            modifier = Modifier
+                                .size(24.dp)
+                            ,
+                            tint = MaterialTheme.colorScheme.onSurface
+                        )
+                    }
+                }
+                "generation_detail_screen/{id}" -> {
+                    IconButton(
+                        onClick = {
+                            navController.popBackStack()
+                        },
+                        modifier = Modifier
+                            .size(48.dp)
+                    ) {
+                        Icon(
+                            imageVector = Icons.Filled.ArrowBack,
+                            contentDescription = null,
+                            modifier = Modifier
+                                .size(24.dp)
+                            ,
+                            tint = MaterialTheme.colorScheme.onSurface
+                        )
+                    }
+                }
+                else -> {
+                    IconButton(
+                        onClick = {
+                            scope.launch {
+                                drawerState?.apply {
+                                    if (isClosed) open() else close()
+                                }
+                            }
+                        },
+                        modifier = Modifier
+                            .size(48.dp)
+                    ) {
+                        Icon(
+                            imageVector = Icons.Filled.Menu,
+                            contentDescription = null,
+                            modifier = Modifier
+                                .size(24.dp)
+                            ,
+                            tint = MaterialTheme.colorScheme.onSurface
+                        )
+                    }
+                }
             }
         },
         actions = {

@@ -1,6 +1,7 @@
 package com.plcoding.jetpackcomposepokedex.data.datasource.remote.api
 
 import com.plcoding.jetpackcomposepokedex.data.datasource.remote.model.response.FetchGenerationResponseDTO
+import com.plcoding.jetpackcomposepokedex.data.datasource.remote.model.response.FetchGenerationVersionResponseDTO
 import com.plcoding.jetpackcomposepokedex.data.datasource.remote.model.response.FetchPokemonListModelResponseDTO
 import com.plcoding.jetpackcomposepokedex.data.datasource.remote.model.response.FetchPokemonResponseDTO
 import com.plcoding.jetpackcomposepokedex.data.datasource.remote.model.response.SearchPokemonResponseDTO
@@ -27,8 +28,13 @@ internal interface PokemonApiService {
         @Query("offset") offset: Int
     ): FetchGenerationResponseDTO
 
-    @GET("pokemon-species/{name}")
+    @GET("generation/{id}")
+    suspend fun fetchGenerationVersion(
+        @Path("id") id: Int
+    ): FetchGenerationVersionResponseDTO
+
+    @GET("pokemon/{name}")
     suspend fun searchPokemon(
-        @Path("name") name: String
+        @Path("name") name: String,
     ): SearchPokemonResponseDTO
 }

@@ -1,6 +1,6 @@
 package com.plcoding.jetpackcomposepokedex.presentation.utils
 
-import android.util.Log
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.focusable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.material.icons.Icons
@@ -11,44 +11,28 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.NavController
 
 @Composable
-fun SearchBar(
+fun SearchBarButton(
     modifier: Modifier = Modifier,
     hint: String = "Search Pokemon",
-    onSearch: (String) -> Unit,
+    navController: NavController
 ) {
-    var text by remember {
-        mutableStateOf("")
-    }
     val interactionSource = remember { MutableInteractionSource() }
 
     TextField(
-        value = text,
-        onValueChange = {
-            text = it
-            onSearch(it)
-            Log.d("SearchPokemon", "onSearch called with input: $it")
-        },
+        value = "",
+        onValueChange = {},
+        enabled = false,
         maxLines = 1,
         singleLine = true,
-        textStyle = TextStyle(
-            fontSize = MaterialTheme.typography.bodyLarge.fontSize,
-            fontWeight = MaterialTheme.typography.bodyLarge.fontWeight,
-            fontFamily = MaterialTheme.typography.bodyLarge.fontFamily,
-            lineHeight = MaterialTheme.typography.bodyLarge.lineHeight,
-            color = MaterialTheme.colorScheme.onSurface
-        )
-        ,
         modifier = modifier
-            .focusable(interactionSource = interactionSource),
+            .focusable(interactionSource = interactionSource)
+            .clickable { navController.navigate("search_screen") },
         placeholder = {
             Text(
                 text = hint,
@@ -65,14 +49,5 @@ fun SearchBar(
         colors = TextFieldDefaults.colors(
             unfocusedContainerColor = MaterialTheme.colorScheme.surface
         )
-    )
-}
-
-@Preview
-@Composable
-fun SearchBarPreview() {
-    SearchBar(
-        hint = "Search",
-        onSearch = { /* handle search here */ },
     )
 }

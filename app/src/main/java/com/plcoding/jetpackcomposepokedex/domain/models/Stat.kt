@@ -1,7 +1,6 @@
 package com.plcoding.jetpackcomposepokedex.domain.models
 
 data class Stat(
-    val base_stat: Int,
-    val effort: Int,
-    val stat: StatX
+    val name: String,
+    val url: String
 )

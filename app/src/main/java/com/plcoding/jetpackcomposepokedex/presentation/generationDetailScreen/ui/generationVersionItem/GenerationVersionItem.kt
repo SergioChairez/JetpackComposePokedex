@@ -1,8 +1,7 @@
-package com.plcoding.jetpackcomposepokedex.presentation.generationListScreen.ui.generationItem
+package com.plcoding.jetpackcomposepokedex.presentation.generationDetailScreen.ui.generationVersionItem
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -14,28 +13,19 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
-import com.plcoding.jetpackcomposepokedex.domain.models.Generation
-import java.util.Locale
+import com.plcoding.jetpackcomposepokedex.domain.models.VersionGroup
+import com.plcoding.jetpackcomposepokedex.util.formatName
 
 @Composable
-fun GenerationItem(
-    index: Int,
-    generation: Generation,
-    modifier: Modifier = Modifier,
-    navController: NavController
+fun GenerationVersionItem(
+    version: VersionGroup,
+    modifier: Modifier = Modifier
 ) {
-    val parts = generation.name.split("-")
 
     Card(
         modifier = modifier
             .padding(8.dp)
-            .clickable {
-                navController.navigate(
-                    "generation_detail_screen/${index}"
-                )
-            },
+        ,
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surface,
             disabledContainerColor = MaterialTheme.colorScheme.surfaceVariant
@@ -47,15 +37,19 @@ fun GenerationItem(
     ) {
         Box(
             modifier = Modifier
-                .fillMaxSize(),
-            contentAlignment = Alignment.CenterStart
+                .fillMaxWidth(),
+            contentAlignment = Alignment.Center
         ) {
             Text(
-                text = "${parts[0].replaceFirstChar {
-                    if (it.isLowerCase()) it.titlecase(Locale.ROOT) else it.toString() }
-                }  ${parts[1].uppercase()}",
+                text = if (version.name.contains("-", true)) {
+                    formatName(version.name)
+                } else {
+                    version.name
+                },
                 modifier = Modifier
-                    .padding(start = 16.dp, end = 16.dp),
+                    .padding(start = 16.dp, end = 16.dp)
+                    .fillMaxWidth()
+                ,
                 style = TextStyle(
                     color = MaterialTheme.colorScheme.onSurface,
                     fontFamily = MaterialTheme.typography.titleLarge.fontFamily,
@@ -65,14 +59,11 @@ fun GenerationItem(
             )
         }
     }
+
 }
 
 @Preview
 @Composable
-fun PreviewGenerationItem() {
-    GenerationItem(
-        index = 1,
-        generation = Generation("Generation X", url = ""),
-        navController = rememberNavController()
-    )
+fun GenerationVersionItemPreview() {
+    GenerationVersionItem(version = VersionGroup("Red", ""))
 }

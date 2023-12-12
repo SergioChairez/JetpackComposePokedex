@@ -56,7 +56,6 @@ fun PokemonListScreen(
                 PokemonListScreenContent(
                     pokemonList = viewModel.pokemonListPagingFlow.collectAsLazyPagingItems(),
                     navController = navController,
-                    viewModel = viewModel,
                     onRetry = {  }
                 )
             }

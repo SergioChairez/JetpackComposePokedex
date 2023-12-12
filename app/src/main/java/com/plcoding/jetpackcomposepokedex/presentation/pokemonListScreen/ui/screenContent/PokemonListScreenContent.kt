@@ -19,7 +19,6 @@ import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import com.plcoding.jetpackcomposepokedex.data.datasource.local.PokemonEntity
 import com.plcoding.jetpackcomposepokedex.presentation.pokemonListScreen.ui.pokemonItem.PokemonItem
-import com.plcoding.jetpackcomposepokedex.presentation.pokemonListScreen.viewmodel.PokemonListViewModel
 import com.plcoding.jetpackcomposepokedex.presentation.utils.RetrySection
 
 @Composable
@@ -27,7 +26,6 @@ fun PokemonListScreenContent(
     pokemonList: LazyPagingItems<PokemonEntity>,
     navController: NavController,
     onRetry: () -> Unit,
-    viewModel: PokemonListViewModel
 ) {
     Box(modifier = Modifier.fillMaxSize()) {
         when (pokemonList.loadState.refresh) {
@@ -49,9 +47,8 @@ fun PokemonListScreenContent(
                         val pokemon = pokemonList[index]
                         if (pokemon != null) {
                             PokemonItem(
-                                entry = pokemon,
+                                pokemon = pokemon,
                                 navController = navController,
-                                viewModel = viewModel
                             )
                         }
                     }

@@ -12,11 +12,12 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import com.plcoding.jetpackcomposepokedex.presentation.generationDetailScreen.screen.GenerationDetailScreen
+import com.plcoding.jetpackcomposepokedex.presentation.generationDetailScreen.ui.screen.GenerationDetailScreen
 import com.plcoding.jetpackcomposepokedex.presentation.generationListScreen.ui.screen.GenerationListScreen
 import com.plcoding.jetpackcomposepokedex.presentation.homeScreen.ui.screen.HomeScreen
 import com.plcoding.jetpackcomposepokedex.presentation.pokemonDetailScreen.ui.pokemonDetailScreen.PokemonDetailScreen
 import com.plcoding.jetpackcomposepokedex.presentation.pokemonListScreen.ui.screen.PokemonListScreen
+import com.plcoding.jetpackcomposepokedex.presentation.searchScreen.ui.searchScreen.SearchScreen
 import com.plcoding.jetpackcomposepokedex.presentation.theme.JetpackComposePokedexTheme
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.Locale
@@ -46,17 +47,33 @@ class MainActivity : ComponentActivity() {
                             navController = navController
                         )
                     }
-                    composable("generation_detail_screen/{generationName}",) {
-                       GenerationDetailScreen(
-                           drawerState = drawerState,
-                           navController = navController
-                       )
+                    composable(
+                        "generation_detail_screen/{id}",
+                        arguments = listOf(
+                            navArgument("id") {
+                                type = NavType.IntType
+                            }
+                        )
+                    ) {
+                        val generationId = remember {
+                            it.arguments?.getInt("id")
+                        }
+                        if (generationId != null) {
+                            GenerationDetailScreen(
+                                id = generationId,
+                                drawerState = drawerState,
+                                navController = navController
+                            )
+                        }
                     }
                     composable("pokemon_list_screen") {
                         PokemonListScreen(
                             drawerState = drawerState,
                             navController = navController
                         )
+                    }
+                    composable("search_screen") {
+                        SearchScreen(navController = navController)
                     }
                     composable(
                         "pokemon_detail_screen/{dominantColor}/{pokemonName}",

@@ -1,10 +1,12 @@
 package com.plcoding.jetpackcomposepokedex.data.repository
 
+import android.util.Log
 import com.plcoding.jetpackcomposepokedex.data.qualifiers.IoDispatcher
 import com.plcoding.jetpackcomposepokedex.domain.datasource.remote.RemotePokemonDataSource
 import com.plcoding.jetpackcomposepokedex.domain.models.GenerationList
-import com.plcoding.jetpackcomposepokedex.domain.models.PokemonModel
 import com.plcoding.jetpackcomposepokedex.domain.models.PokemonListModel
+import com.plcoding.jetpackcomposepokedex.domain.models.PokemonModel
+import com.plcoding.jetpackcomposepokedex.domain.models.VersionGroup
 import com.plcoding.jetpackcomposepokedex.domain.repository.PokemonRepository
 import com.plcoding.jetpackcomposepokedex.util.ResultValue
 import kotlinx.coroutines.CoroutineDispatcher
@@ -29,5 +31,17 @@ internal class PokemonRepositoryImpl @Inject constructor(
         withContext(coroutineDispatcher) {
             remotePokemonDatasource.fetchGenerationList(limit, offset)
         }
+
+    override suspend fun fetchGenerationVersion(id: Int): ResultValue<List<VersionGroup>> =
+        withContext(coroutineDispatcher) {
+            remotePokemonDatasource.fetchGenerationVersion(id)
+        }
+
+    override suspend fun searchPokemon(name: String): ResultValue<PokemonModel> =
+        withContext(coroutineDispatcher) {
+            val result = remotePokemonDatasource.searchPokemon(name)
+            Log.d("Result", "Repository: $result")
+            result
+    }
 
 }

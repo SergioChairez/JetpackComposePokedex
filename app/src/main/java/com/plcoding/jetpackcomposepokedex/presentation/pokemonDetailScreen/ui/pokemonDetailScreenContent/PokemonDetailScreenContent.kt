@@ -59,10 +59,13 @@ fun PokemonDetailScreenContent(
         round(pokemonModelInfo.height * 100f) / 1000f
     }
     val maxBaseStat = remember {
-        pokemonModelInfo.stats.maxOf { it.base_stat }
+        pokemonModelInfo.stats.maxOf { it.baseStat }
     }
     var animationPlayed by remember {
         mutableStateOf(false)
+    }
+    LaunchedEffect(key1 = true) {
+        animationPlayed = true
     }
 
     Column (
@@ -147,7 +150,7 @@ fun PokemonDetailScreenContent(
                 val stat = pokemonModelInfo.stats[i]
                 val curPercent = animateFloatAsState(
                     targetValue = if ( animationPlayed ) {
-                        stat.base_stat / maxBaseStat.toFloat()
+                        stat.baseStat / maxBaseStat.toFloat()
                     } else 0f,
                     animationSpec = tween(
                         1000,
@@ -155,10 +158,7 @@ fun PokemonDetailScreenContent(
                     ),
                     label = ""
                 )
-                LaunchedEffect(key1 = true) {
-                    animationPlayed = true
-                }
-                Box (
+                Box(
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(28.dp)

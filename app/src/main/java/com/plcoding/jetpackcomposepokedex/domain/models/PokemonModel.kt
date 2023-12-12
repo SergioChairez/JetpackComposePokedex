@@ -17,7 +17,7 @@ data class PokemonModel(
     val past_types: List<Any>,
     val species: Species,
     val sprites: Sprites,
-    val stats: List<Stat>,
+    val stats: List<Stats>,
     val types: List<Types>,
     val weight: Int
 )

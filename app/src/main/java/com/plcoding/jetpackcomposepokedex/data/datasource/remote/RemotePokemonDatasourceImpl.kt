@@ -5,8 +5,9 @@ import com.plcoding.jetpackcomposepokedex.data.datasource.remote.util.asDomain
 import com.plcoding.jetpackcomposepokedex.domain.datasource.remote.RemoteDataSource
 import com.plcoding.jetpackcomposepokedex.domain.datasource.remote.RemotePokemonDataSource
 import com.plcoding.jetpackcomposepokedex.domain.models.GenerationList
-import com.plcoding.jetpackcomposepokedex.domain.models.PokemonModel
 import com.plcoding.jetpackcomposepokedex.domain.models.PokemonListModel
+import com.plcoding.jetpackcomposepokedex.domain.models.PokemonModel
+import com.plcoding.jetpackcomposepokedex.domain.models.VersionGroup
 import com.plcoding.jetpackcomposepokedex.util.ResultValue
 import javax.inject.Inject
 
@@ -44,6 +45,23 @@ internal class RemotePokemonDatasourceImpl @Inject constructor(
             pokemonApiService.fetchGenerationList(
                 limit = limit,
                 offset = offset
+            ).asDomain()
+        }
+    }
+
+    override suspend fun fetchGenerationVersion(id: Int): ResultValue<List<VersionGroup>> {
+        return remoteDataSource.call {
+            pokemonApiService.fetchGenerationVersion(
+                id = id,
+            ).asDomain()
+        }
+    }
+
+
+    override suspend fun searchPokemon(name: String): ResultValue<PokemonModel> {
+        return remoteDataSource.call {
+            pokemonApiService.searchPokemon(
+                name = name,
             ).asDomain()
         }
     }

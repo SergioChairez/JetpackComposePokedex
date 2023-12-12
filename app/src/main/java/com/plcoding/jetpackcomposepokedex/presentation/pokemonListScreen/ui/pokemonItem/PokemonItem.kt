@@ -31,13 +31,14 @@ import androidx.navigation.NavController
 import coil.compose.SubcomposeAsyncImage
 import coil.request.ImageRequest
 import com.plcoding.jetpackcomposepokedex.data.datasource.local.PokemonEntity
-import com.plcoding.jetpackcomposepokedex.presentation.pokemonListScreen.viewmodel.PokemonListViewModel
+import com.plcoding.jetpackcomposepokedex.util.calcDominantColor
+import com.plcoding.jetpackcomposepokedex.util.formatName
+import com.plcoding.jetpackcomposepokedex.util.url
 
 @Composable
 fun PokemonItem(
-    entry: PokemonEntity,
+    pokemon: PokemonEntity,
     navController: NavController,
-    viewModel: PokemonListViewModel
 ) {
     val defaultDominantColor = MaterialTheme.colorScheme.surface
     var dominantColor by remember {
@@ -58,16 +59,16 @@ fun PokemonItem(
             )
             .clickable {
                 navController.navigate(
-                    "pokemon_detail_screen/${dominantColor.toArgb()}/${entry.pokemonName}"
+                    "pokemon_detail_screen/${dominantColor.toArgb()}/${pokemon.pokemonName}"
                 )
             }
     ) {
         Column {
             SubcomposeAsyncImage(
                 model = ImageRequest.Builder(LocalContext.current)
-                    .data(viewModel.url(entry.imageUrl))
+                    .data(url(pokemon.imageUrl))
                     .build(),
-                contentDescription = entry.pokemonName,
+                contentDescription = pokemon.pokemonName,
                 contentScale = ContentScale.FillBounds,
                 modifier = Modifier
                     .size(120.dp)
@@ -81,13 +82,13 @@ fun PokemonItem(
                 },
                 onSuccess = {
                     val drawable = it.result.drawable
-                    viewModel.calcDominantColor(drawable) { color->
+                    calcDominantColor(drawable) { color->
                         dominantColor = color
                     }
                 }
             )
             Text(
-                text = viewModel.formatName(entry.pokemonName),
+                text = formatName(pokemon.pokemonName),
                 textAlign = TextAlign.Center,
                 modifier = Modifier
                     .fillMaxWidth()

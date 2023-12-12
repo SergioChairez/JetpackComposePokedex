@@ -1,5 +1,6 @@
 package com.plcoding.jetpackcomposepokedex.data.datasource.remote
 
+import android.util.Log
 import com.plcoding.jetpackcomposepokedex.domain.datasource.exception.createExceptionByErrorCode
 import com.plcoding.jetpackcomposepokedex.domain.datasource.remote.RemoteDataSource
 import com.plcoding.jetpackcomposepokedex.util.ResultValue
@@ -17,6 +18,7 @@ internal class RemoteDataSourceImpl @Inject constructor(
             val res = request.invoke()
             ResultValue.Success(res)
         } catch (e: Exception) {
+            Log.d("Result", "RemoteDataSource: ", e)
             ResultValue.Error(e)
         }
 
