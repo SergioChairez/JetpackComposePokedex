@@ -47,24 +47,11 @@ class MainActivity : ComponentActivity() {
                             navController = navController
                         )
                     }
-                    composable(
-                        "generation_detail_screen/{id}",
-                        arguments = listOf(
-                            navArgument("id") {
-                                type = NavType.IntType
-                            }
+                    composable("generation_detail_screen/{id}") {
+                        GenerationDetailScreen(
+                            drawerState = drawerState,
+                            navController = navController
                         )
-                    ) {
-                        val generationId = remember {
-                            it.arguments?.getInt("id")
-                        }
-                        if (generationId != null) {
-                            GenerationDetailScreen(
-                                id = generationId,
-                                drawerState = drawerState,
-                                navController = navController
-                            )
-                        }
                     }
                     composable("pokemon_list_screen") {
                         PokemonListScreen(

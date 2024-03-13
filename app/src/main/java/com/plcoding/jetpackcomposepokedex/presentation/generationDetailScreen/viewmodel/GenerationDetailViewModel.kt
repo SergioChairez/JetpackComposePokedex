@@ -14,7 +14,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class GenerationDetailViewModel @Inject constructor(
-    private val fetchGenerationVersion: FetchGenerationVersion
+    private val fetchGenerationVersion: FetchGenerationVersion,
 ): ViewModel() {
     private val _uiState = MutableStateFlow(UiState())
     val uiState = _uiState.asStateFlow()
@@ -25,10 +25,6 @@ class GenerationDetailViewModel @Inject constructor(
         val isLoading: Boolean = true,
         val errorMessage: String = ""
     )
-
-    init {
-        loadGenerationDetail(id = 1)
-    }
 
     fun loadGenerationDetail(id: Int) {
         viewModelScope.launch {

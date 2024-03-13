@@ -33,7 +33,7 @@ fun GenerationItem(
             .padding(8.dp)
             .clickable {
                 navController.navigate(
-                    "generation_detail_screen/${index}"
+                    "generation_detail_screen/${(index + 1)}"
                 )
             },
         colors = CardDefaults.cardColors(

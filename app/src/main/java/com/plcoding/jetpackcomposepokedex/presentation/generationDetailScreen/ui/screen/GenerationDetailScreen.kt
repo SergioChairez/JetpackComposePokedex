@@ -9,12 +9,15 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.plcoding.jetpackcomposepokedex.presentation.generationDetailScreen.ui.screenContent.GenerationDetailScreenContent
 import com.plcoding.jetpackcomposepokedex.presentation.generationDetailScreen.viewmodel.GenerationDetailViewModel
@@ -25,13 +28,19 @@ import com.plcoding.jetpackcomposepokedex.presentation.utils.PokedexTopAppBar
 
 @Composable
 fun GenerationDetailScreen(
-    id: Int,
     drawerState: DrawerState,
     viewModel: GenerationDetailViewModel = hiltViewModel(),
     navController: NavController
 ) {
     val scope = rememberCoroutineScope()
     val uiState = viewModel.uiState.collectAsState().value
+    val navBackStackEntry by navController.currentBackStackEntryAsState()
+    val index = navBackStackEntry?.arguments?.getInt("index")
+    LaunchedEffect(index) {
+        if (index != null) {
+            viewModel.loadGenerationDetail(id = index)
+        }
+    }
 
     PokedexNavigationDrawer(
         drawerState = drawerState,
@@ -63,7 +72,9 @@ fun GenerationDetailScreen(
                     uiState = uiState,
                     navController = navController,
                     onRetry = {
-                        viewModel.loadGenerationDetail(id)
+                        if (index != null) {
+                            viewModel.loadGenerationDetail(id = index)
+                        }
                     }
                 )
             }
@@ -77,6 +88,5 @@ fun GenerationDetailScreenPreview() {
     GenerationDetailScreen(
         drawerState = rememberDrawerState(initialValue = DrawerValue.Closed),
         navController = rememberNavController(),
-        id = 1
     )
 }

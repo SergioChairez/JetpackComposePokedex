@@ -1,11 +1,12 @@
 package com.plcoding.jetpackcomposepokedex.presentation.generationDetailScreen.ui.screenContent
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyHorizontalGrid
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
@@ -47,9 +48,11 @@ fun GenerationDetailScreenContent(
                     color = MaterialTheme.colorScheme.primary
                 )
             } else {
-                LazyHorizontalGrid(
-                    rows = GridCells.Adaptive(50.dp),
+                LazyVerticalGrid(
+                    modifier = Modifier.fillMaxSize(),
+                    columns = GridCells.Fixed(1),
                     contentPadding = PaddingValues(8.dp),
+                    horizontalArrangement = Arrangement.Center,
                 ) {
                     items(uiState.generationDetail.size) { index ->
                         val generationVersion = uiState.generationDetail[index]
