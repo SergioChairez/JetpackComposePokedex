@@ -33,7 +33,6 @@ import coil.request.ImageRequest
 import com.plcoding.jetpackcomposepokedex.R
 import com.plcoding.jetpackcomposepokedex.presentation.homeScreen.ui.util.BottomModalSheet
 import com.plcoding.jetpackcomposepokedex.presentation.homeScreen.viemodel.HomeScreenViewModel
-import com.plcoding.jetpackcomposepokedex.util.url
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -110,7 +109,7 @@ fun HomeScreenContent(
         ) {
             SubcomposeAsyncImage(
                 model = ImageRequest.Builder(LocalContext.current)
-                    .data(url(uiState.url))
+                    .data(uiState.url)
                     .build(),
                 contentDescription = null,
                 contentScale = ContentScale.FillBounds,
