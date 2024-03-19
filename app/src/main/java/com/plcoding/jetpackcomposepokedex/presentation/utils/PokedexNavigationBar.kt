@@ -23,7 +23,7 @@ fun PokedexNavigationBar(
     navController: NavController,
 ) {
     val items = listOf(Icons.Default.Home, Icons.Default.Favorite, Icons.Default.Notifications)
-    val navList = listOf("home_screen", "", "")
+    val navList: List<String?> = listOf("home_screen", "", "")
 
     NavigationBar(
         modifier = Modifier
@@ -38,7 +38,9 @@ fun PokedexNavigationBar(
             NavigationBarItem(
                 selected = navController.currentDestination?.route == nav,
                 onClick = {
-                    navController.navigate(nav)
+                    if (!nav.isNullOrEmpty()) {
+                        navController.navigate(nav)
+                    }
                 },
                 icon = {
                     Icon(

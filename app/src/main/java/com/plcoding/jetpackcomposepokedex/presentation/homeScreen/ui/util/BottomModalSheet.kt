@@ -35,6 +35,7 @@ import kotlinx.coroutines.launch
 fun BottomModalSheet(
     scope: CoroutineScope,
     sheetState: SheetState,
+    uiState: HomeScreenViewModel.UiState,
     viewModel: HomeScreenViewModel
 ) {
     val screenHeight = LocalConfiguration.current.screenHeightDp.dp
@@ -82,7 +83,7 @@ fun BottomModalSheet(
                         value = name,
                         onValueChange = {
                             name = it
-                            viewModel.uiState.value.name = it
+                            uiState.name = it
                         },
                         label = {
                             Text(text = "Name")
@@ -94,7 +95,7 @@ fun BottomModalSheet(
                         value = type,
                         onValueChange = {
                             type = it
-                            viewModel.uiState.value.type = it
+                            uiState.type = it
                         },
                         label = {
                             Text(text = "Type")
@@ -108,7 +109,6 @@ fun BottomModalSheet(
                             if (!sheetState.isVisible) {
                                 viewModel.hideBottomSheet()
                                 viewModel.createPokemonDescription()
-                                viewModel.createPokemonImage()
                             }
                         }
                     }

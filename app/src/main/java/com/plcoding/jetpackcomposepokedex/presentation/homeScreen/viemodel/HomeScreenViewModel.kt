@@ -1,13 +1,16 @@
 package com.plcoding.jetpackcomposepokedex.presentation.homeScreen.viemodel
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.aallam.openai.api.BetaOpenAI
 import com.aallam.openai.api.chat.ChatCompletion
 import com.aallam.openai.api.chat.ChatCompletionRequest
 import com.aallam.openai.api.chat.ChatMessage
 import com.aallam.openai.api.chat.ChatRole
 import com.aallam.openai.api.image.ImageCreation
+import com.aallam.openai.api.image.ImageSize
+import com.aallam.openai.api.image.Quality
+import com.aallam.openai.api.image.Style
 import com.aallam.openai.api.model.ModelId
 import com.aallam.openai.client.OpenAI
 import com.plcoding.jetpackcomposepokedex.util.Constants
@@ -35,7 +38,6 @@ class HomeScreenViewModel @Inject constructor(
         val url: String = ""
     )
 
-    @OptIn(BetaOpenAI::class)
     fun createPokemonDescription() {
         viewModelScope.launch {
             val openAI = OpenAI(Constants.CHAT_GPT_API_KEY)
@@ -53,48 +55,31 @@ class HomeScreenViewModel @Inject constructor(
                     )
                 )
 
-                val completion: ChatCompletion = openAI.chatCompletion(chatCompletionRequest)
-                val response = completion.choices.first().message?.content
-
-                _uiState.value = currentState.copy(
-                    isLoaded = true,
-                    onStart = false,
-                    response = response ?: "No response"
-                )
-
-            } catch (e: Exception) {
-                _uiState.value = currentState.copy(
-                    isLoaded = false,
-                    onStart = false,
-                    onError = true,
-                    response = "Error: ${e.message ?: ""}"
-                )
-            }
-
-        }
-
-    }
-
-    @OptIn(BetaOpenAI::class)
-    fun createPokemonImage() {
-        viewModelScope.launch {
-            val openAI = OpenAI(Constants.CHAT_GPT_API_KEY)
-            val currentState = _uiState.value
-
-            try {
-                val imageGenerationRequest = ImageCreation(
+                val imageCreationRequest = ImageCreation(
                     prompt = "Create an image of a Pokemon with this " +
                             "name: ${currentState.name} and this type: ${currentState.type} " +
-                            "and this description ${currentState.response}"
+                            "and this description ${currentState.response} in a location that " +
+                            "corresponds to its type"
+                    ,
+                    n = 1,
+                    model = ModelId("dall-e-2"),
+                    quality = Quality("hd"),
+                    style = Style.Vivid,
+                    size = ImageSize.is1024x1024
                 )
 
-                val imageGeneration = openAI.imageURL(imageGenerationRequest)
-                val response = imageGeneration[0].url
+                val creation = openAI.imageURL(imageCreationRequest)
+                val imageResponse = creation.first().url
+                Log.i("URL", imageResponse)
+
+                val completion: ChatCompletion = openAI.chatCompletion(chatCompletionRequest)
+                val completionResponse = completion.choices.first().message.content
 
                 _uiState.value = currentState.copy(
                     isLoaded = true,
                     onStart = false,
-                    url = response
+                    response = completionResponse ?: "No response",
+                    url = imageResponse
                 )
 
             } catch (e: Exception) {
@@ -105,7 +90,9 @@ class HomeScreenViewModel @Inject constructor(
                     response = "Error: ${e.message ?: ""}"
                 )
             }
+
         }
+
     }
 
     fun showBottomSheet() {

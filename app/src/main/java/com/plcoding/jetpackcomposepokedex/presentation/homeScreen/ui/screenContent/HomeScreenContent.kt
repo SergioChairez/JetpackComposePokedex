@@ -1,11 +1,14 @@
 package com.plcoding.jetpackcomposepokedex.presentation.homeScreen.ui.screenContent
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -21,6 +24,8 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import coil.compose.SubcomposeAsyncImage
@@ -86,6 +91,7 @@ fun HomeScreenContent(
                 BottomModalSheet(
                     scope,
                     sheetState,
+                    uiState,
                     viewModel
                 )
             }
@@ -93,18 +99,23 @@ fun HomeScreenContent(
     }
 
     if (uiState.isLoaded) {
-        Column (
-            modifier = Modifier.padding(10.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
+        val scrollState = rememberScrollState()
+
+        Column(
+            modifier = Modifier
+                .padding(10.dp)
+                .verticalScroll(scrollState),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.SpaceEvenly,
         ) {
             SubcomposeAsyncImage(
                 model = ImageRequest.Builder(LocalContext.current)
                     .data(url(uiState.url))
                     .build(),
                 contentDescription = null,
-                contentScale = ContentScale.Crop,
+                contentScale = ContentScale.FillBounds,
                 modifier = Modifier
-                    .size(120.dp)
+                    .size(300.dp)
                     .align(Alignment.CenterHorizontally)
                 ,
                 loading = {
@@ -116,13 +127,32 @@ fun HomeScreenContent(
             )
             Text(
                 text = uiState.response ?: "No Response",
+                overflow = TextOverflow.Ellipsis,
                 style = TextStyle(
                     color = MaterialTheme.colorScheme.onSurface,
                     fontFamily = MaterialTheme.typography.titleLarge.fontFamily,
                     fontSize = MaterialTheme.typography.titleMedium.fontSize,
-                    textAlign = MaterialTheme.typography.titleLarge.textAlign
+                    textAlign = TextAlign.Justify
                 )
             )
+            Button(
+                onClick = {
+                    navController.popBackStack()
+                    navController.navigate(
+                        "home_screen"
+                    )
+                }
+            ) {
+                Text(
+                    text = "Try again!",
+                    style = TextStyle(
+                        color = MaterialTheme.colorScheme.inverseOnSurface,
+                        fontFamily = MaterialTheme.typography.titleLarge.fontFamily,
+                        fontSize = MaterialTheme.typography.titleMedium.fontSize,
+                        textAlign = MaterialTheme.typography.titleLarge.textAlign
+                    )
+                )
+            }
         }
     }
     

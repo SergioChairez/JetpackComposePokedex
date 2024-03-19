@@ -98,7 +98,7 @@ dependencies {
     implementation "androidx.paging:paging-compose:1.0.0-alpha18"
 
     // OpenAI
-    implementation "com.aallam.openai:openai-client:3.0.0"
+    implementation "com.aallam.openai:openai-client:3.7.0"
 
     // Ktor
     implementation "io.ktor:ktor-client-android:2.2.4"
