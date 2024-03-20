@@ -18,4 +18,8 @@ interface RemotePokemonDataSource {
 
     suspend fun searchPokemon(name: String): ResultValue<PokemonModel>
 
+    suspend fun getPokemonDescription(name: String, type: String): ResultValue<String>
+
+    suspend fun getPokemonImage(name: String, type: String, description: String): ResultValue<String>
+
 }

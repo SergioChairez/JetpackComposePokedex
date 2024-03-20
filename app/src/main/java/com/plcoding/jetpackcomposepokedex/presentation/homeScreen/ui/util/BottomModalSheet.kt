@@ -28,6 +28,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import com.plcoding.jetpackcomposepokedex.presentation.homeScreen.viemodel.HomeScreenViewModel
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -105,10 +106,11 @@ fun BottomModalSheet(
                 Spacer(modifier = Modifier.height(5.dp))
                 Button(
                     onClick = {
-                        scope.launch { sheetState.hide() }.invokeOnCompletion {
+                        scope.launch (Dispatchers.IO) { sheetState.hide() }.invokeOnCompletion {
                             if (!sheetState.isVisible) {
                                 viewModel.hideBottomSheet()
                                 viewModel.createPokemonDescription()
+                                viewModel.createPokemonImage()
                             }
                         }
                     }

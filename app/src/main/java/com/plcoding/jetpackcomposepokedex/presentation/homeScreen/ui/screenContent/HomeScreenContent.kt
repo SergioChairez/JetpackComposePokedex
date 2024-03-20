@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
@@ -12,6 +13,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
@@ -97,6 +99,17 @@ fun HomeScreenContent(
         }
     }
 
+    if (uiState.isLoading) {
+        Box(modifier = Modifier.fillMaxSize()) {
+            LinearProgressIndicator(
+                modifier = Modifier
+                    .align(Alignment.TopCenter)
+                    .fillMaxWidth(),
+                color = MaterialTheme.colorScheme.primary
+            )
+        }
+    }
+
     if (uiState.isLoaded) {
         val scrollState = rememberScrollState()
 
@@ -125,7 +138,7 @@ fun HomeScreenContent(
                 },
             )
             Text(
-                text = uiState.response ?: "No Response",
+                text = uiState.description ?: "No Response",
                 overflow = TextOverflow.Ellipsis,
                 style = TextStyle(
                     color = MaterialTheme.colorScheme.onSurface,
@@ -161,7 +174,7 @@ fun HomeScreenContent(
             contentAlignment = Alignment.Center,
         ) {
             Text(
-                text = "${uiState.response}",
+                text = uiState.description,
                 style = TextStyle(
                     color = MaterialTheme.colorScheme.onSurface,
                     fontFamily = MaterialTheme.typography.titleLarge.fontFamily,

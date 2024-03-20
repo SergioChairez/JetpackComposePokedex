@@ -44,4 +44,18 @@ internal class PokemonRepositoryImpl @Inject constructor(
             result
     }
 
+    override suspend fun getPokemonDescription(name: String, type: String): ResultValue<String> =
+        withContext(coroutineDispatcher) {
+            remotePokemonDatasource.getPokemonDescription(name, type)
+        }
+
+    override suspend fun getPokemonImage(
+        name: String,
+        type: String,
+        description: String
+    ): ResultValue<String> =
+        withContext(coroutineDispatcher) {
+            remotePokemonDatasource.getPokemonImage(name, type, description)
+        }
+
 }
