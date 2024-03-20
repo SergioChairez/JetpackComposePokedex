@@ -1,6 +1,5 @@
 package com.plcoding.jetpackcomposepokedex.data.repository
 
-import android.util.Log
 import com.plcoding.jetpackcomposepokedex.data.qualifiers.IoDispatcher
 import com.plcoding.jetpackcomposepokedex.domain.datasource.remote.RemotePokemonDataSource
 import com.plcoding.jetpackcomposepokedex.domain.models.GenerationList
@@ -40,22 +39,16 @@ internal class PokemonRepositoryImpl @Inject constructor(
     override suspend fun searchPokemon(name: String): ResultValue<PokemonModel> =
         withContext(coroutineDispatcher) {
             val result = remotePokemonDatasource.searchPokemon(name)
-            Log.d("Result", "Repository: $result")
             result
     }
 
-    override suspend fun getPokemonDescription(name: String, type: String): ResultValue<String> =
-        withContext(coroutineDispatcher) {
-            remotePokemonDatasource.getPokemonDescription(name, type)
-        }
-
-    override suspend fun getPokemonImage(
+    override suspend fun getPokemon(
         name: String,
         type: String,
         description: String
-    ): ResultValue<String> =
+    ): ResultValue<Pair<String, String>> =
         withContext(coroutineDispatcher) {
-            remotePokemonDatasource.getPokemonImage(name, type, description)
+            remotePokemonDatasource.getPokemon(name, type, description)
         }
 
 }

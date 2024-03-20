@@ -77,7 +77,8 @@ internal class RemotePokemonDatasourceImpl @Inject constructor(
         }
     }
 
-    override suspend fun getPokemonDescription(name: String, type: String): ResultValue<String> {
+    override suspend fun getPokemon(name: String, type: String, description: String):
+            ResultValue<Pair<String, String>> {
         return remoteDataSource.call {
             val chatCompletionRequest = ChatCompletionRequest(
                 model = ModelId("gpt-3.5-turbo"),
@@ -90,13 +91,6 @@ internal class RemotePokemonDatasourceImpl @Inject constructor(
                 )
             )
 
-            val completion: ChatCompletion = openAIService.openAI.chatCompletion(chatCompletionRequest)
-            completion.choices.first().message.content!!
-        }
-    }
-
-    override suspend fun getPokemonImage(name: String, type: String, description: String): ResultValue<String> {
-        return remoteDataSource.call {
             val imageCreationRequest = ImageCreation(
                 prompt = "Create an image of a Pokemon with" +
                         " this name: $name and this type: $type and this" +
@@ -110,7 +104,13 @@ internal class RemotePokemonDatasourceImpl @Inject constructor(
             )
 
             val creation = openAIService.openAI.imageURL(imageCreationRequest)
-            creation.first().url
+            val imageUrl = creation.first().url
+
+            val completion: ChatCompletion = openAIService.openAI.chatCompletion(chatCompletionRequest)
+            val chatContent = completion.choices.first().message.content!!
+
+            Pair(imageUrl, chatContent)
         }
     }
+
 }

@@ -4,8 +4,10 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
@@ -122,7 +124,7 @@ fun HomeScreenContent(
         ) {
             SubcomposeAsyncImage(
                 model = ImageRequest.Builder(LocalContext.current)
-                    .data(uiState.url)
+                    .data(uiState.pokemonData.first)
                     .build(),
                 contentDescription = null,
                 contentScale = ContentScale.FillBounds,
@@ -137,8 +139,9 @@ fun HomeScreenContent(
                     )
                 },
             )
+            Spacer(modifier = Modifier.height(5.dp))
             Text(
-                text = uiState.description,
+                text = uiState.pokemonData.second,
                 overflow = TextOverflow.Ellipsis,
                 style = TextStyle(
                     color = MaterialTheme.colorScheme.onSurface,
@@ -147,6 +150,7 @@ fun HomeScreenContent(
                     textAlign = TextAlign.Justify
                 )
             )
+            Spacer(modifier = Modifier.height(10.dp))
             Button(
                 onClick = {
                     navController.popBackStack()
@@ -174,7 +178,7 @@ fun HomeScreenContent(
             contentAlignment = Alignment.Center,
         ) {
             Text(
-                text = uiState.description,
+                text = uiState.errorMessage,
                 style = TextStyle(
                     color = MaterialTheme.colorScheme.onSurface,
                     fontFamily = MaterialTheme.typography.titleLarge.fontFamily,
