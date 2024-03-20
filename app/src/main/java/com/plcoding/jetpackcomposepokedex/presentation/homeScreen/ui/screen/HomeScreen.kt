@@ -66,6 +66,7 @@ fun HomeScreen(
             ) {
                 HomeScreenContent(
                     navController,
+                    scope,
                     uiState,
                     viewModel
                 )

@@ -18,7 +18,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
@@ -35,17 +34,18 @@ import coil.request.ImageRequest
 import com.plcoding.jetpackcomposepokedex.R
 import com.plcoding.jetpackcomposepokedex.presentation.homeScreen.ui.util.BottomModalSheet
 import com.plcoding.jetpackcomposepokedex.presentation.homeScreen.viemodel.HomeScreenViewModel
+import kotlinx.coroutines.CoroutineScope
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreenContent(
     navController: NavController,
+    scope: CoroutineScope,
     uiState: HomeScreenViewModel.UiState,
     viewModel: HomeScreenViewModel
 ) {
 
     val sheetState = rememberModalBottomSheetState()
-    val scope = rememberCoroutineScope()
 
     if (uiState.onStart) {
         Column (

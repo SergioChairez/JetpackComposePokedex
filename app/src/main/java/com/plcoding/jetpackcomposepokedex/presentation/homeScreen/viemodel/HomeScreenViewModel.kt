@@ -31,7 +31,7 @@ class HomeScreenViewModel @Inject constructor(
         val url: String = ""
     )
 
-    fun createPokemonDescription() {
+    fun createPokemon() {
         viewModelScope.launch {
             val currentState = _uiState.value
 
@@ -61,14 +61,6 @@ class HomeScreenViewModel @Inject constructor(
                     )
                 }
             }
-
-        }
-
-    }
-
-    fun createPokemonImage() {
-        viewModelScope.launch {
-            val currentState = _uiState.value
 
             when (val result = getPokemonImageUseCase.invoke(
                 currentState.name,

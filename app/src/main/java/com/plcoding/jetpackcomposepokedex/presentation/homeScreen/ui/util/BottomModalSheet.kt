@@ -109,8 +109,7 @@ fun BottomModalSheet(
                         scope.launch (Dispatchers.IO) { sheetState.hide() }.invokeOnCompletion {
                             if (!sheetState.isVisible) {
                                 viewModel.hideBottomSheet()
-                                viewModel.createPokemonDescription()
-                                viewModel.createPokemonImage()
+                                viewModel.createPokemon()
                             }
                         }
                     }
