@@ -138,7 +138,7 @@ fun HomeScreenContent(
                 },
             )
             Text(
-                text = uiState.description ?: "No Response",
+                text = uiState.description,
                 overflow = TextOverflow.Ellipsis,
                 style = TextStyle(
                     color = MaterialTheme.colorScheme.onSurface,
