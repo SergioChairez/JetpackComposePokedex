@@ -29,7 +29,46 @@ class HomeScreenViewModel @Inject constructor(
         val errorMessage: String = ""
     )
 
+
     fun createPokemon() {
+        viewModelScope.launch {
+            val currentState = _uiState.value
+            getPokemonUseCase.invoke(
+                currentState.name,
+                currentState.type,
+                currentState.pokemonData.second
+            ).collect { result ->
+                when (result) {
+                    is ResultValue.Loading -> {
+                        _uiState.value = currentState.copy(
+                            isLoading = true,
+                            onStart = false
+                        )
+                    }
+                    is ResultValue.Success -> {
+                        _uiState.value = currentState.copy(
+                            isLoaded = true,
+                            onStart = false,
+                            pokemonData = result.data,
+                            isLoading = false
+                        )
+                    }
+                    is ResultValue.Error -> {
+                        _uiState.value = currentState.copy(
+                            isLoaded = false,
+                            onStart = false,
+                            onError = true,
+                            errorMessage = "Error: ${result.exception.message ?: ""}",
+                            isLoading = false
+                        )
+                    }
+                }
+            }
+        }
+    }
+
+
+    /*fun createPokemon() {
         viewModelScope.launch {
             val currentState = _uiState.value
 
@@ -63,7 +102,7 @@ class HomeScreenViewModel @Inject constructor(
 
         }
 
-    }
+    }*/
 
     fun showBottomSheet() {
         val currentState = _uiState.value

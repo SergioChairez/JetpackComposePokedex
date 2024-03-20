@@ -19,6 +19,8 @@ import com.plcoding.jetpackcomposepokedex.domain.models.PokemonListModel
 import com.plcoding.jetpackcomposepokedex.domain.models.PokemonModel
 import com.plcoding.jetpackcomposepokedex.domain.models.VersionGroup
 import com.plcoding.jetpackcomposepokedex.util.ResultValue
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
 internal class RemotePokemonDatasourceImpl @Inject constructor(
@@ -77,7 +79,54 @@ internal class RemotePokemonDatasourceImpl @Inject constructor(
         }
     }
 
-    override suspend fun getPokemon(name: String, type: String, description: String):
+    override suspend fun getPokemon(
+        name: String,
+        type: String,
+        description: String
+    ): Flow<ResultValue<Pair<String, String>>> = flow {
+        emit(ResultValue.Loading())
+        try {
+            remoteDataSource.call {
+                val chatCompletionRequest = ChatCompletionRequest(
+                    model = ModelId("gpt-3.5-turbo"),
+                    messages = listOf(
+                        ChatMessage(
+                            role = ChatRole.User,
+                            content = "Create a description of a Pokemon with" +
+                                    " this name: $name and this type: $type"
+                        )
+                    )
+                )
+
+                val imageCreationRequest = ImageCreation(
+                    prompt = "Create an image of a Pokemon " +
+                            "of type $type and " +
+                            "$description with a pokemon anime background in pokemon anime style",
+                    n = 1,
+                    model = ModelId("dall-e-2"),
+                    quality = Quality("hd"),
+                    style = Style.Vivid,
+                    size = ImageSize.is1024x1024
+                )
+
+                val creation = openAIService.openAI.imageURL(imageCreationRequest)
+                val imageUrl = creation.first().url
+
+                val completion: ChatCompletion =
+                    openAIService.openAI.chatCompletion(chatCompletionRequest)
+                val chatContent = completion.choices.first().message.content!!
+
+                val pair = Pair(imageUrl, chatContent)
+                emit(ResultValue.Success(pair))
+            }
+
+        } catch (e: Exception) {
+            emit(ResultValue.Error(e))
+        }
+    }
+
+
+    /*override suspend fun getPokemon(name: String, type: String, description: String):
             ResultValue<Pair<String, String>> {
         return remoteDataSource.call {
             val chatCompletionRequest = ChatCompletionRequest(
@@ -92,10 +141,9 @@ internal class RemotePokemonDatasourceImpl @Inject constructor(
             )
 
             val imageCreationRequest = ImageCreation(
-                prompt = "Create an image of a Pokemon with" +
-                        " this name: $name and this type: $type and this" +
-                        " description $description in a location that" +
-                        " corresponds to its type in pokemon style",
+                prompt = "Create an image of a Pokemon " +
+                        "of type $type and " +
+                        "$description with a pokemon anime background in pokemon anime style",
                 n = 1,
                 model = ModelId("dall-e-2"),
                 quality = Quality("hd"),
@@ -106,11 +154,12 @@ internal class RemotePokemonDatasourceImpl @Inject constructor(
             val creation = openAIService.openAI.imageURL(imageCreationRequest)
             val imageUrl = creation.first().url
 
-            val completion: ChatCompletion = openAIService.openAI.chatCompletion(chatCompletionRequest)
+            val completion: ChatCompletion =
+                openAIService.openAI.chatCompletion(chatCompletionRequest)
             val chatContent = completion.choices.first().message.content!!
 
             Pair(imageUrl, chatContent)
         }
-    }
+    }*/
 
 }

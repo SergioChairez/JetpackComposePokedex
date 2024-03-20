@@ -9,6 +9,7 @@ import com.plcoding.jetpackcomposepokedex.domain.models.VersionGroup
 import com.plcoding.jetpackcomposepokedex.domain.repository.PokemonRepository
 import com.plcoding.jetpackcomposepokedex.util.ResultValue
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
@@ -46,7 +47,7 @@ internal class PokemonRepositoryImpl @Inject constructor(
         name: String,
         type: String,
         description: String
-    ): ResultValue<Pair<String, String>> =
+    ): Flow<ResultValue<Pair<String, String>>> =
         withContext(coroutineDispatcher) {
             remotePokemonDatasource.getPokemon(name, type, description)
         }

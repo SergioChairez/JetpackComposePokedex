@@ -5,6 +5,7 @@ import com.plcoding.jetpackcomposepokedex.domain.models.PokemonListModel
 import com.plcoding.jetpackcomposepokedex.domain.models.PokemonModel
 import com.plcoding.jetpackcomposepokedex.domain.models.VersionGroup
 import com.plcoding.jetpackcomposepokedex.util.ResultValue
+import kotlinx.coroutines.flow.Flow
 
 interface PokemonRepository {
 
@@ -19,6 +20,6 @@ interface PokemonRepository {
     suspend fun searchPokemon(name: String): ResultValue<PokemonModel>
 
     suspend fun getPokemon(name: String, type: String, description: String):
-            ResultValue<Pair<String, String>>
+            Flow<ResultValue<Pair<String, String>>>
 
 }

@@ -109,6 +109,16 @@ fun HomeScreenContent(
                     .fillMaxWidth(),
                 color = MaterialTheme.colorScheme.primary
             )
+            Text(
+                text = "Generating Image...",
+                modifier = Modifier.align(Alignment.Center),
+                style = TextStyle(
+                    color = MaterialTheme.colorScheme.onSurface,
+                    fontFamily = MaterialTheme.typography.titleLarge.fontFamily,
+                    fontSize = MaterialTheme.typography.titleLarge.fontSize,
+                    textAlign = MaterialTheme.typography.titleLarge.textAlign
+                )
+            )
         }
     }
 
